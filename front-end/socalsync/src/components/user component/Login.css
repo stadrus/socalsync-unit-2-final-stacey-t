@@ -1,0 +1,132 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.login-wrapper{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: (0, 0, 0, 0.2);
+}
+.login-box{
+    position: relative;
+    width: 450px;
+    -webkit-backdrop-filter: blur(25px);
+    backdrop-filter: blur(25px);
+    border: 2px solid #1e1930;
+    border-radius: 15px;
+    padding: 7em 3em 4em 3em;
+    color: white;
+    box-shadow: 0px 0px 10px 2px (0, 0, 0, 0.3);
+}
+.login-header{
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    background-color: #1e1930;
+    width: 140px;
+    height: 70px;
+    border-radius: 0 0 20px 20px;
+    align-items: center;
+}
+.login-header{
+    font-size: 30px;
+    color: white;
+}
+.login-header::after{
+    content: "";
+    position: absolute;
+    top: 0;
+    right: -30px;
+    width: 30px;
+    height: 30px;
+    border-top-left-radius: 50%;
+    background: transparent;
+    box-shadow: -15px 0 0 0 #1e1930;
+}
+.login-header::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -30px;
+    width: 30px;
+    height: 30px;
+    border-top-right-radius: 50%;
+    background: transparent;
+    box-shadow: 15px 0 0 0 #1e1930;
+}
+.input-box{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    margin-top: 50px;
+    margin-bottom: 30px;
+    width: 100%;
+    height: 65px;
+    border-radius: 30px;
+    background: transparent;
+    border: 2px solid #1e1930;
+    padding: 0 20px;
+    box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.3);
+    transition: 0.3s;
+}
+.input-box input{
+    width: 100%;
+    height: 65px;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 1px;
+    border: none;
+    background: transparent;
+    color: white;
+    padding-inline: 20px 50px ;
+    border-radius: 2px solid #1e1930;
+    border-radius: 30px;
+    outline: none;
+}
+.submit-button{
+    text-align: center;
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.register-button{
+    text-align: center;
+    width: 100%;
+    height: 30px;
+    display: flex;
+    justify-content: space-around;
+    font-size: 16px;
+    font-weight: 500;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.login-button{
+  text-align: center;
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: space-around;
+  font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: 0.3s;
+}
