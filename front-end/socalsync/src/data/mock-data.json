@@ -1,0 +1,21 @@
+[
+    {
+            "id": 0,
+            "title": "Nana's 95th",
+            "details": "At Welcome Park",
+            "date": "2025-05-28"
+
+        },
+        {
+            "id": 1,
+            "title": "Family Game Night",
+            "details": "Main Event",
+            "date":"2025-05-30"
+        },
+        {
+            "id": 2,
+            "title": "Family Reunion",
+            "details": "At Welcome Park",
+            "date":"2025-06-25"
+        }
+]
