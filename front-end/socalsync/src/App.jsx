@@ -1,13 +1,13 @@
 import { BrowserRouter, Routes, Route } from 'react-router'
 import './App.css'
-import Header from './component/page component/Header'
-import Footer from './component/page component/Footer'
-import Home from './component/page component/Home'
-import About from './component/page component/About'
-import Register from './component/user component/Register'
-import Login from './component/user component/Login'
-import Dashboard from './component/user component/Dashboard'
-import EventTable from './component/event component/EventTable'
+import Header from '../../../front-end/socalsync/src/components/page component/Header'
+import Footer from '../../../front-end/socalsync/src/components/page component/Footer'
+import Home from '../../../front-end/socalsync/src/components/page component/Home'
+import About from '../../../front-end/socalsync/src/components/page component/About'
+import Register from '../src/components/user component/Register'
+import Login from '../src/components/user component/Login'
+import Dashboard from '../src/components/user component/Dashboard'
+import EventTable from '../src/components/event component/EventTable'
 
 
 
