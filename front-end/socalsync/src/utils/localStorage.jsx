@@ -1,4 +1,3 @@
-//This function task oi to 
 
 export function setItem(key, value){
     try{
@@ -15,6 +14,6 @@ export function getItem(key){
         return item ? JSON.parse(item) : null;
     } catch(error){
         console.error('Error reading localstorage', error);
-        return null;
+        return  null;
     }
 }

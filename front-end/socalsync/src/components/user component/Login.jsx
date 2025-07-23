@@ -7,22 +7,24 @@ function Login () {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const storedUsers = getItem('userData') || [];
     const [message, setMessage] = useState('');
+    const storedUsers = Array.isArray(getItem('userData')) ?getItem('userData') : [];
 
    
 
-    //this variable uses .find() to find the first matching element in the array. 
-    const registerdUser = storedUsers.find(user => user.email === email && user.password === password);
-
+    
     //create a function that alerts user of login status based on the stored email and password matching the localstorage data.//
     const handleSubmit = (e) => {
         e.preventDefault();
+
+        //this variable uses .find() to find the first matching element in the array. 
+        const registerdUser = storedUsers.find(user => user.email === email && user.password === password);
+        
         if (registerdUser){
-            setMessage("Email or password is invalid");
-        } else{
             setMessage("Login Successful");
             navigate('/Dashboard');
+        } else{
+            setMessage("Email or password is invalid");
         }
     };
 
