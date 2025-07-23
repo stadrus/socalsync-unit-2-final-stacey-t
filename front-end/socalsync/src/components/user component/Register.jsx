@@ -1,27 +1,25 @@
 import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import './Register.css';
-
+import { setItem, getItem } from '../../utils/localStorage';
 
 function Register () {
-    // let data = JSON.stringify(user);
   
     //create user inputs using State// 
     const [name,setName]= useState ('');
     const [email, setEmail] = useState('');
     const [password,setPassword] = useState('');
 
-    // const storedUser = JSON.parse(localStorage.getItem(userData));
-    // console.log(storedUser);//moved to login component//
-    
     //create useState for userData to add new user in local storage in an array//
-    const [userData, setUserData] = useState([]); 
-    
+    const [userData, setUserData] = useState(() => getItem('userData') || []);
+
+    // created a message state to replace js "alert" and add styling.
+    const [message, setMessage] = useState('');
+
     // localStorage.setItem('user', setUserData);
-     
     //further research on localstorage propmt me to use, useEffect.//
     useEffect (() => {
-       localStorage.setItem('userData', JSON.stringify(userData));
+       setItem('userData', JSON.stringify(userData));
        console.log(userData);
     },[userData]);
    
@@ -45,9 +43,9 @@ function Register () {
         setUserData(prev=> [...prev, newUser]);
         
         if (name === '' || email === '' || password === ''){
-            alert ("Profile in use.")
+            setMessage("Profile in use.")
         } else {
-            alert ("Registration Complete");
+            setMessage("Registration Complete");
         }
        
         fetch("https://reqres.in/api/users", {
@@ -74,6 +72,7 @@ function Register () {
                         <input className="input-box" id="email" placeholder='Enter Email' type="email"  value={email} onChange= {handleEmail}/><br></br>
                         <input className="input-box" id="current-password" placeholder="Enter Password" type="password" value={password} onChange={handlePassword}/><br></br>
                         <button className="submit-button" type="submit">Submit</button>
+                        {message && <p className='form-message'>{message}</p>}
                 </div>
                     </form>   
             </div>

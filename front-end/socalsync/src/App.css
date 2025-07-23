@@ -8,6 +8,11 @@ body{
     min-height: 100vh;   
 }
 
+.form-message{
+    margin-top: 10px;
+    color: #f44336;
+    font-weight: bold;
+}
 .submit-button{
     all: unset;
     width: 100px;
