@@ -1,28 +1,32 @@
 import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
+import { setItem, getItem } from '../../utils/localStorage';
 import './Register.css';
 
-
 function Register () {
-    // let data = JSON.stringify(user);
   
     //create user inputs using State// 
     const [name,setName]= useState ('');
     const [email, setEmail] = useState('');
     const [password,setPassword] = useState('');
 
-    // const storedUser = JSON.parse(localStorage.getItem(userData));
-    // console.log(storedUser);//moved to login component//
-    
     //create useState for userData to add new user in local storage in an array//
-    const [userData, setUserData] = useState([]); 
+    const [userData, setUserData] = useState(() =>{
+        const stored =getItem('userData');
+        return Array.isArray(stored) ? stored : [];
+    });
+
+    // created a message state to replace js "alert" and add styling.
+    const [message, setMessage] = useState('');
     
+    //useNavigate will navigate user to Login once registration in complete.//
+    const navigate = useNavigate();
+
     // localStorage.setItem('user', setUserData);
-     
     //further research on localstorage propmt me to use, useEffect.//
     useEffect (() => {
-       localStorage.setItem('userData', JSON.stringify(userData));
-       console.log(userData);
+       setItem('userData', userData);
+  
     },[userData]);
    
 
@@ -36,20 +40,29 @@ function Register () {
      const handlePassword = (e) =>{
         setPassword(e.target.value);
     }
-    //useNavigate will navigate user to Login once registration in complete.//
-    const navigate = useNavigate();
    //submit button should create a new user everytime someone registers an account//
     const handleSubmit = (e) => {
         e.preventDefault();
-        const newUser = {name, email, password}//should produce a new user//
-        setUserData(prev=> [...prev, newUser]);
         
         if (name === '' || email === '' || password === ''){
-            alert ("Profile in use.")
-        } else {
-            alert ("Registration Complete");
+            setMessage("Please fill in all fields");
+            return;
         }
-       
+        const emailExists = userData.find(user => user.email === email);
+        if(emailExists){
+            setMessage("Email already registered.");
+            return;
+        }
+
+        const newUser = { name, email, password };//should produce a new user//
+        setUserData(prev => [...prev, newUser]);
+        setMessage("Registration Complete");
+
+        //clear the form after input//
+        setName('');
+        setEmail('');
+        setPassword('');
+        
         fetch("https://reqres.in/api/users", {
         method: "POST",
         headers: {
@@ -59,9 +72,12 @@ function Register () {
             body: JSON.stringify(newUser)
         })
         .then(response => response.json())
-        .then(data => console.log(data));
-        navigate('/Login');
-    }
+        .then(data => {
+            console.log(data);
+            navigate('/Login'); 
+        })
+        .catch(error => console.error("Registration error:", error))
+    };
     return (
         <div className='register-wrapper'>
             <div className='register-box'>
@@ -70,10 +86,32 @@ function Register () {
                 </div>
                 <form id="register-form" onSubmit={handleSubmit}>
                 <div>
-                        <input className="input-box" id="name-user" placeholder='Enter Name' type="text" value={name} onChange={handleName}/><br></br>
-                        <input className="input-box" id="email" placeholder='Enter Email' type="email"  value={email} onChange= {handleEmail}/><br></br>
-                        <input className="input-box" id="current-password" placeholder="Enter Password" type="password" value={password} onChange={handlePassword}/><br></br>
+                        <input 
+                        className="input-box" 
+                        id="name-user" 
+                        placeholder='Enter Name' 
+                        type="text" 
+                        value={name} 
+                        onChange={handleName}/><br></br>
+
+                        <input 
+                        className="input-box" 
+                        id="email" 
+                        placeholder='Enter Email' 
+                        type="email"  
+                        value={email} 
+                        onChange= {handleEmail}/><br></br>
+
+                        <input 
+                        className="input-box" 
+                        id="current-password" 
+                        placeholder="Enter Password" 
+                        type="password" 
+                        value={password} 
+                        onChange={handlePassword}/><br></br>
+
                         <button className="submit-button" type="submit">Submit</button>
+                        {message && <p className='form-message'>{message}</p>}
                 </div>
                     </form>   
             </div>
