@@ -12,6 +12,7 @@ const Dashboard = () => {
     };
     
     return(
+        <div>
         <div className="dashboard-container">
         <div className="dashboard-wrapper">
             <header className="dasboard-header">
@@ -20,16 +21,17 @@ const Dashboard = () => {
             <section className="dashboard-hero">
                 <h1 className="dashboard-header">Welcome to your Dashboard</h1>
             </section>
+        </div>
+        </div>
             <article className="dashboard-events">
             <EventTable />
             </article>
-            <div className="sharebutton-wrapper">
-            <ShareButton />
+            <div className="addtoany-container">
+                <ShareButton />
             </div>
             <div className="chat-box">
                 <Chat />
             </div>
-        </div>
         </div>
     )
 };
