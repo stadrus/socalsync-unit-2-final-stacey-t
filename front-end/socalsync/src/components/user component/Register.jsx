@@ -2,6 +2,8 @@ import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 import { setItem, getItem } from '../../utils/localStorage';
 import './Register.css';
+import { COMETCHAT_CONSTANTS } from '../../cometchat.config';
+import { CometChat } from '@cometchat/chat-sdk-javascript';
 
 function Register () {
   
@@ -63,6 +65,7 @@ function Register () {
         setEmail('');
         setPassword('');
         
+        //mock api for registering new users.
         fetch("https://reqres.in/api/users", {
         method: "POST",
         headers: {
@@ -74,7 +77,19 @@ function Register () {
         .then(response => response.json())
         .then(data => {
             console.log(data);
-            navigate('/Login'); 
+            //CometChat Registration//
+            const cometChatUser = new CometChat.User(email);
+            cometChatUser.setName(name);
+
+            CometChat.createUser(cometChatUser, COMETCHAT_CONSTANTS.AUTH_KEY).then(user => {
+                console.log("CometChat user created:", user);
+                navigate('/Login'); 
+            },
+        error => {
+            console.error("CometChat registration faild:", error);
+            setMessage("Registration succeeded, but chat setup faild.")
+        });
+
         })
         .catch(error => console.error("Registration error:", error))
     };

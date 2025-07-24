@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import { getItem } from "../../utils/localStorage";
 import { useState } from "react";
 import './Login.css'
+import { CometChatUIKit } from "@cometchat/chat-uikit-react";
 
 function Login () {
     const navigate = useNavigate();
@@ -10,9 +11,6 @@ function Login () {
     const [message, setMessage] = useState('');
     const storedUsers = Array.isArray(getItem('userData')) ?getItem('userData') : [];
 
-   
-
-    
     //create a function that alerts user of login status based on the stored email and password matching the localstorage data.//
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -22,10 +20,30 @@ function Login () {
         
         if (registerdUser){
             setMessage("Login Successful");
-            navigate('/Dashboard');
+            // navigate('/Dashboard');
         } else{
             setMessage("Email or password is invalid");
         }
+    //This code was provided by CometChat to setup users. I modified the code so that CometChat could be used once the user logs into the app without having to do it twice. This way the system checks for the user by either id, uid, or email using the logical ( '||' ) symbol //
+    const UID = registerdUser.id || registerdUser.uid || registerdUser.email;
+    CometChatUIKit.getLoggedinUser().then((user) => {
+        if (!user) {
+            // If no user is logged in, proceed with login
+            CometChatUIKit.login(UID)
+            .then((user) => {
+                //console.log to test login//
+                console.log("Login Successful:", { user });
+                navigate('/Dashboard');
+            })
+            .catch((error) => {
+                console.error("CometChat Login Error:", error);
+                setMessage("Login error with chat service");
+            });
+        } else {
+            navigate('/Dashboard');
+        }
+});
+
     };
 
     const handleClick = () =>{

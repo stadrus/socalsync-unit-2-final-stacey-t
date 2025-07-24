@@ -2,6 +2,7 @@ import { useNavigate } from "react-router";
 import EventTable from "../event component/EventTable";
 import ShareButton from './ShareButton'
 import './dashboard.css'
+import Chat from "../cometchat component/Chat";
 
 const Dashboard = () => {
 
@@ -24,6 +25,9 @@ const Dashboard = () => {
             </article>
             <div className="sharebutton-wrapper">
             <ShareButton />
+            </div>
+            <div className="chat-box">
+                <Chat />
             </div>
         </div>
         </div>
