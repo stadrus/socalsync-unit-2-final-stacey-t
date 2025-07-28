@@ -56,7 +56,7 @@ function Register () {
             return;
         }
 
-        const newUser = { name, email, password };//should produce a new user//
+        const newUser = { name, email };//should produce a new user//
         setUserData(prev => [...prev, newUser]);
         setMessage("Registration Complete");
 

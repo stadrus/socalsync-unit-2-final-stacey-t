@@ -9,23 +9,22 @@ function Login () {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    const storedUsers = Array.isArray(getItem('userData')) ?getItem('userData') : [];
+
+    const storedUsers = Array.isArray(getItem('userData')) ? getItem('userData') : [];
 
     //create a function that alerts user of login status based on the stored email and password matching the localstorage data.//
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         //this variable uses .find() to find the first matching element in the array. 
-        const registerdUser = storedUsers.find(user => user.email === email && user.password === password);
+        const registeredUser = storedUsers.find(user => user.email === email && user.password === password);
         
-        if (registerdUser){
+        if (registeredUser){
             setMessage("Login Successful");
-            // navigate('/Dashboard');
-        } else{
-            setMessage("Email or password is invalid");
-        }
-    //This code was provided by CometChat to setup users. I modified the code so that CometChat could be used once the user logs into the app without having to do it twice. This way the system checks for the user by either id, uid, or email using the logical ( '||' ) symbol //
-    const UID = registerdUser.id || registerdUser.uid || registerdUser.email;
+          
+            const UID = registeredUser.id || registeredUser.uid || registeredUser.email;
+    
+            //This code was provided by CometChat to setup users. I modified the code so that CometChat could be used once the user logs into the app without having to do it twice. This way the system checks for the user by either id, uid, or email using the logical ( '||' ) symbol //
     CometChatUIKit.getLoggedinUser().then((user) => {
         if (!user) {
             // If no user is logged in, proceed with login
@@ -43,6 +42,9 @@ function Login () {
             navigate('/Dashboard');
         }
 });
+        }else{
+            setMessage("Email or password is incalid");
+        }
 
     };
 
@@ -75,7 +77,8 @@ function Login () {
                         onChange={(e) => setPassword(e.target.value)}
                         />
                         <button className="submit-button" type="submit">Submit</button><br></br>
-                        <button className="register-button" type="button" onClick={handleClick}>Register</button> {message && <p className="form-message">{message}</p>}
+                        <button className="register-button" type="button" onClick={handleClick}>Register</button> 
+                        {message && <p className="form-message">{message}</p>}
                     </div>
                     </form>
                </div>

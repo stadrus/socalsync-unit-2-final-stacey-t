@@ -22,7 +22,7 @@ const Chat = () => {
         setSelectedGroup(null);
     } else if (item instanceof CometChat.Group){
         setSelectedUser(null);
-        selectedGroup(item);
+        setSelectedGroup(item);
     } else {
         setSelectedUser(null)
         setSelectedGroup(null);
