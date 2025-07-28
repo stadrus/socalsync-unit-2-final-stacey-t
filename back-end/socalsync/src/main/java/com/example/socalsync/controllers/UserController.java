@@ -1,6 +1,6 @@
 package com.example.socalsync.controllers;
 
-import com.example.socalsync.models.CometChatService;
+import com.example.socalsync.service.CometChatService;
 import com.example.socalsync.models.User;
 import com.example.socalsync.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
