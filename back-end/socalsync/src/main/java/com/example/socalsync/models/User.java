@@ -2,21 +2,23 @@ package com.example.socalsync.models;
 
 import jakarta.persistence.*;
 
+
 @Entity
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private String name;
 
     //columns for table
-    @Column(nullable = true)
-    private String cometchatUID;
     @Column(name = "username")
     private String username;
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
     @Column(name = "password")
     private String password;
+    @Column(unique = true)
+    private String cometchatUID;
 
     //constructors
 
@@ -25,15 +27,11 @@ public class User {
     public User (String cometchatUID) {
         this.cometchatUID = cometchatUID;
     }
-    public User(String username, String email, String password) {
+    public User(String name, String username, String email, String password) {
+        this.name = name;
         this.username = username;
         this.email = email;
         this.password = password;
-    }
-
-    public User(int id) {
-        this.id = id;
-
     }
 
     //getters and setters
@@ -45,6 +43,10 @@ public class User {
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getName() {return name;}
+
+    public void setName(String name) {this.name = name;}
 
     public String getUsername() {
         return username;
@@ -58,8 +60,8 @@ public class User {
         return email;
     }
 
-    public void setEmail(String description) {
-        this.email = description;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getPassword() {
@@ -70,17 +72,7 @@ public class User {
         this.password = password;
     }
 
-    @Override
-    public String toString () {
-        return "<p><b>NAME<b>: "+ username +"<p>" +
-                "<p><b>EMAIL<b>: "+ email +"<p>";
-    }
+    public String getCometchatUID() {return cometchatUID;}
 
-    public String getCometchatUID() {
-        return cometchatUID;
-    }
-
-    public void setCometchatUID(String cometchatUID) {
-        this.cometchatUID = cometchatUID;
-    }
+    public void setCometchatUID(String cometchatUID) {this.cometchatUID = cometchatUID;}
 }

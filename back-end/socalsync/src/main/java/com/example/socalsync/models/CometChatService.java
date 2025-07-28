@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
@@ -17,6 +18,7 @@ import java.util.Map;
 // CometChat API-Service
 @Service
 public class CometChatService {
+
 
     //Stored Env Var to hide APP ID and API Key
     @Value("${CHAT_APP_ID}")
@@ -35,16 +37,20 @@ public class CometChatService {
         headers.set("appId", appId);
         headers.set("apiKey", apiKey);
         //build request body
-        Map<String, String> requestBody = new HashMap<>();
+        Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("uid", uid);
         requestBody.put("name", name);
 
-        HttpEntity<Map<String, String>> request = new HttpEntity<>(requestBody, headers);
+        HttpEntity<Map<String, Object>> request = new HttpEntity<>(requestBody, headers);
 
         try{
-            restTemplate.postForEntity(COMETCHAT_URL, request, String.class);
+            ResponseEntity<String>response = restTemplate.postForEntity(COMETCHAT_URL, request, String.class);
+            if (!response.getStatusCode().is2xxSuccessful()){
+                throw new RuntimeException("CometChat registration failed. Code:" + response.getStatusCode());
+            }
+
         } catch (RestClientException e) {
-            throw new RuntimeException("Failed to register with CometChat: " +e.toString());
+            throw new RuntimeException("Failed to register with CometChat: " + e.getMessage());
         }
     }
 }
