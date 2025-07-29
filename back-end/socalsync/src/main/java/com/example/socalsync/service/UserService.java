@@ -23,6 +23,9 @@ public class UserService {
     public Optional<User> authenticate(String email, String password){
         return userRepository.findByEmail(email).filter(user -> passwordEncoder.matches(password, user.getPassword()));
     }
+    public boolean existsByEmail(String email){
+        return userRepository.findByEmail(email).isPresent();
+    }
 }
 //Reference this GeeksforGeeks article to add BCryptPasswordEncoder.
 //https://www.geeksforgeeks.org/advance-java/spring-security-implementation-of-bcryptpasswordencoder/
