@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private int user_Id;
     private String name;
 
     //columns for table
@@ -36,13 +36,10 @@ public class User {
 
     //getters and setters
 
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public int getUser_Id() { return user_Id; }
+
+    public void setUser_Id(int user_Id) { this.user_Id = user_Id;}
 
     public String getName() {return name;}
 

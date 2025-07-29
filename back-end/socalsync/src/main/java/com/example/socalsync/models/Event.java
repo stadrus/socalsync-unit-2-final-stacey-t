@@ -1,47 +1,51 @@
 package com.example.socalsync.models;
 
+
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
-    //columns for table
-    @Column(name = "title")
+    private int event_id;
     private String title;
-    @Column(name = "description")
     private String description;
-    @Column (name = "date")
-    private int date;
-    @Column (name = "time")
-    private int time;
+    private LocalDateTime eventDateTime;
+    private String location;
+
+
+    @ManyToOne
+    @JoinColumn(name = "user_Id")
+    private User user;
+
 
     //constructor
     public Event() {
     }
 
-    public Event(int id) {
-        this.id = id;
+    public Event(int event_id) {
+        this.event_id = event_id;
     }
 
-    public Event(String title, String description, int date, int time) {
-        this.title = title;
+    public Event(User user, String location, LocalDateTime eventDateTime, String description, String title) {
+        this.user = user;
+        this.location = location;
+        this.eventDateTime = eventDateTime;
         this.description = description;
-        this.date = date;
-        this.time = time;
+        this.title = title;
     }
-
     //getters and setters
-    public int getId() {
-        return id;
-    }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+
+    public int getEvent_id() {return event_id;}
+
+    public void setEvent_id(int event_id) {this.event_id = event_id;}
+
+    public User getUser() {return user;}
+
+    public void setUser(User user) {this.user = user;}
 
     public String getTitle() {
         return title;
@@ -59,29 +63,21 @@ public class Event {
         this.description = description;
     }
 
-    public int getDate() {
-        return date;
-    }
+    public LocalDateTime getEventDateTime() {return eventDateTime;}
 
-    public void setDate(int date) {
-        this.date = date;
-    }
+    public void setEventDateTime(LocalDateTime eventDateTime) {this.eventDateTime = eventDateTime;}
 
-    public int getTime() {
-        return time;
-    }
+    public String getLocation() {return location;}
 
-    public void setTime(int time) {
-        this.time = time;
-    }
+    public void setLocation(String location) {this.location = location;}
 
     @Override
     public String toString() {
         return "Event{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", date=" + date +
-                ", time=" + time +
+                ", eventDateTime=" + eventDateTime +
+                ", location='" + location + '\'' +
                 '}';
     }
 }
