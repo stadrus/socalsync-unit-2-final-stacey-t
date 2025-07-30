@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router";
-import { getItem } from "../../utils/localStorage";
 import { useState } from "react";
 import './Login.css'
 import { CometChatUIKit } from "@cometchat/chat-uikit-react";
@@ -10,42 +9,32 @@ function Login () {
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
 
-    const storedUsers = Array.isArray(getItem('userData')) ? getItem('userData') : [];
-
     //create a function that alerts user of login status based on the stored email and password matching the localstorage data.//
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        //this variable uses .find() to find the first matching element in the array. 
-        const registeredUser = storedUsers.find(user => user.email === email && user.password === password);
         
-        if (registeredUser){
-            setMessage("Login Successful");
-          
-            const UID = registeredUser.id || registeredUser.uid || registeredUser.email;
-    
-            //This code was provided by CometChat to setup users. I modified the code so that CometChat could be used once the user logs into the app without having to do it twice. This way the system checks for the user by either id, uid, or email using the logical ( '||' ) symbol //
-    CometChatUIKit.getLoggedinUser().then((user) => {
-        if (!user) {
-            // If no user is logged in, proceed with login
-            CometChatUIKit.login(UID)
-            .then((user) => {
-                //console.log to test login//
-                console.log("Login Successful:", { user });
-                navigate('/Dashboard');
-            })
-            .catch((error) => {
-                console.error("CometChat Login Error:", error);
-                setMessage("Login error with chat service");
+        try{
+            const response = await fetch("http://localhost:8080/api/auth/login", {
+                method: "POST",
+                headers: {"content-Type": "application/json"},
+                body: JSON.stringify({email,password})
             });
-        } else {
-            navigate('/Dashboard');
-        }
-});
-        }else{
-            setMessage("Email or password is incalid");
-        }
+            if(!response.ok){
+                throw new Error('Invaild login');
+            }
 
+            const user = await response.json();
+            const UID = user.email;
+
+            const cometUser = await CometChatUIKit.getLoggedinUser();
+            if(!cometUser){
+                await CometChatUIKit.login(UID);
+            }
+            navigate('/Dashboard');
+        } catch (error) {
+            console.error('Login failed:', error);
+            setMessage('Login failed');
+        }
     };
 
     const handleClick = () =>{
