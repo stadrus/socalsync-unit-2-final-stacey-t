@@ -24,7 +24,7 @@ const EditRow = ({editFormData, handleEditFormChange, handleCancelClick}) => {
             </td>
             <td>
                 <input 
-                type='date'
+                type= "datetime-local"
                 name="date"
                 required="required"
                 placeholder="Enter a event date"

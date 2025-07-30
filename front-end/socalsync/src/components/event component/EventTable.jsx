@@ -112,7 +112,7 @@ const EventTable = () =>{
                         <tr>
                             <th>Event Title</th>
                             <th>Event Details</th>
-                            <th>Event Date</th>
+                            <th>Event Date and Time</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -142,10 +142,10 @@ const EventTable = () =>{
                     placeholder="Enter event details"
                     onChange = {handleAddFormChange}/>
                 <input 
-                    type='date'
+                    type="datetime-local"
                     name="date"
                     required="required"
-                    placeholder="Enter a date"
+                    placeholder="Enter a date and start time"
                     onChange = {handleAddFormChange}/>
                 <button type='submit'>Add</button>
             </form>
