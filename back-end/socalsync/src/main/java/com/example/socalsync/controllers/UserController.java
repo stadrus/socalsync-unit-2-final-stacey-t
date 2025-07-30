@@ -30,7 +30,7 @@ import java.util.Optional;
     }
 
     //POST a new user one registration is complete
-    //Endpoint http:localhost:8080/api/users/register
+    //Endpoint http:localhost:8081/api/users/register
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request) {
         if (userService.existsByEmail(request.getEmail())) {

@@ -1,6 +1,7 @@
 package com.example.socalsync.models;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
@@ -9,7 +10,7 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int event_id;
+    private int eventId;
     private String title;
     private String description;
     private LocalDateTime eventDateTime;
@@ -17,7 +18,7 @@ public class Event {
 
 
     @ManyToOne
-    @JoinColumn(name = "user_Id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
 
@@ -25,32 +26,26 @@ public class Event {
     public Event() {
     }
 
-    public Event(int event_id) {
-        this.event_id = event_id;
+    public Event(int eventId) {
+        this.eventId = eventId;
     }
 
-    public Event(User user, String location, LocalDateTime eventDateTime, String description, String title) {
-        this.user = user;
+    public Event(String location, LocalDateTime eventDateTime, String description, String title) {
+
         this.location = location;
         this.eventDateTime = eventDateTime;
         this.description = description;
         this.title = title;
     }
     //getters and setters
-
-
-    public int getEvent_id() {return event_id;}
-
-    public void setEvent_id(int event_id) {this.event_id = event_id;}
+    public int getEventId() {return eventId;}
 
     public User getUser() {return user;}
-
     public void setUser(User user) {this.user = user;}
 
     public String getTitle() {
         return title;
     }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -58,7 +53,6 @@ public class Event {
     public String getDescription() {
         return description;
     }
-
     public void setDescription(String description) {
         this.description = description;
     }

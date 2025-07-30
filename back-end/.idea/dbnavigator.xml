@@ -23,7 +23,7 @@
     <connections>
       <connection source-id="" id="e62045d6-7bfe-4042-8f14-27f5bb6054b7" active="true" signed="true">
         <database>
-          <name value="socalsync" />
+          <name value="socalsync_test" />
           <description value="" />
           <database-type value="MYSQL" />
           <config-type value="BASIC" />
@@ -34,7 +34,7 @@
           <url-type value="DATABASE" />
           <host value="localhost" />
           <port value="3306" />
-          <database value="socalsync" />
+          <database value="socalsync_test" />
           <tns-folder value="" />
           <tns-profile value="" />
           <server-type value="" />
