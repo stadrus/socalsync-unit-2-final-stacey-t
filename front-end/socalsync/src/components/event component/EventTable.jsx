@@ -1,5 +1,4 @@
 import { Fragment, useEffect, useState } from "react";
-import { nanoid } from "nanoid";
 import ReadRow from "./ReadRow";
 import EditRow from "./EditRow";
 import './eventTable.css';
@@ -26,7 +25,7 @@ const EventTable = () =>{
     useEffect(() => {
         const fetchEvents = async () =>{
             try{
-                const response = await fetch("api/events");
+                const response = await fetch(`api/events/user/${userId}`);
                 const data = await response.json();
                 setEvents (data);
             } catch (error){
@@ -55,7 +54,7 @@ const EventTable = () =>{
         };
 
         try{
-            const response = await fetch("/api/event",{
+            const response = await fetch(`/api/events/${userId}`,{
                 method: "POST",
                 headers: {"Content-type":"application/json"},
                 body: JSON.stringify(newEvent),
@@ -83,7 +82,7 @@ const EventTable = () =>{
         };
 
         try{
-            const response = await fetch(`/api/event/${editEventId}`,{
+            const response = await fetch(`/api/events/${editEventId}`,{
                 method: "PUT",
                 headers: {"Content-type":"application/json"},
                 body: JSON.stringify(editedEvent),
@@ -92,7 +91,7 @@ const EventTable = () =>{
 
             const updated = await response.json();
 
-            setEvents((previousState) => previousState.map((ev.id === updated.id ? updated : ev)));
+            setEvents((previousState) => previousState.map((ev) => ev.id === updated.id ? updated : ev));
             setEditEventId(null);
         }catch (error) {
             console.error("Updated event failed:", error);
@@ -113,9 +112,11 @@ const EventTable = () =>{
     const handleCancelClick = () =>{
         setEditEventId(null);
     };
+
+
     const handleDeleteClick = async (eventId) =>{
         try{
-            const response = await fetch(`/api/event/${eventId}`,{
+            const response = await fetch(`/api/events/${eventId}`,{
                 method: "DELETE",
             });
             if(!response.ok) throw new Error("Faild to delete event");
@@ -157,12 +158,14 @@ const EventTable = () =>{
                     name="title"
                     required="required"
                     placeholder="Enter a event title"
+                    value={addFormData.title}
                     onChange = {handleAddFormChange}/>
                 <input 
                     type="text"
                     name="details"
                     required="required"
                     placeholder="Enter event details"
+                    value={addFormData.details}
                     onChange = {handleAddFormChange}/>
                 <input 
                     type="datetime-local"

@@ -25,8 +25,8 @@ public class EventController {
     }
 
     //Create Event
-    //Endpoint http:localhost:8081/api/events
-    @PostMapping("/api/events")
+    //Endpoint http:localhost:8081/api/events/user/{userId}
+    @PostMapping("/user/{userId}")
     public ResponseEntity<EventResponseDTO> createEvent(@PathVariable int userId, @RequestBody EventDTO eventDTO) {
         EventResponseDTO createdEvent = eventService.createEvent(userId, eventDTO);
         return ResponseEntity.ok(createdEvent);
@@ -34,7 +34,7 @@ public class EventController {
 
     //Get all events
     //Endpoint http:localhost:8081/api/events/user/{userId}
-    @GetMapping("/api/events/user/{userId}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<EventResponseDTO>> getAllUserEvents(@PathVariable int userId) {
         List<EventResponseDTO> events = eventService.getAllUserEventsByUserId(userId);
         return ResponseEntity.ok(events);
@@ -42,7 +42,7 @@ public class EventController {
 
     //GET Single Event
     //Endpoint http:localhost:8081/api/{eventId}
-    @GetMapping("/api/{eventId}")
+    @GetMapping("/{eventId}")
     public ResponseEntity<EventResponseDTO> getEventByID(@PathVariable int eventId) {
         EventResponseDTO event = eventService.getEventById(eventId);
         return ResponseEntity.ok(event);
@@ -50,7 +50,7 @@ public class EventController {
 
     //Update Event
     //Endpoint http:localhost:8081/api/events/{eventId}
-    @PutMapping("/api/events/{eventId}")
+    @PutMapping("/{eventId}")
     public ResponseEntity<EventResponseDTO> updateEvent(@PathVariable int eventId, @RequestBody EventDTO eventDTO) {
         EventResponseDTO updated = eventService.updateEvent(eventId, eventDTO);
         return ResponseEntity.ok(updated);
@@ -58,10 +58,11 @@ public class EventController {
 
     //Delete Event
     //Endpoint http:localhost:8081/api/events/{eventId}
-    @DeleteMapping("/api/events/{eventId}")
+    @DeleteMapping("/{eventId}")
     public ResponseEntity<?> deleteEvent(@PathVariable int eventId) {
         eventService.deleteEvent(eventId);
         return ResponseEntity.ok("Event deleted");
     }
+
 
 }
