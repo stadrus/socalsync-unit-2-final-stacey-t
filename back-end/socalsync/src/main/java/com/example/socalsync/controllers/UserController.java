@@ -5,10 +5,16 @@ import com.example.socalsync.models.dto.RegisterRequest;
 import com.example.socalsync.service.CometChatService;
 import com.example.socalsync.models.User;
 import com.example.socalsync.service.UserService;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.Optional;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 
 
 @CrossOrigin(origins = "*")
@@ -20,6 +26,8 @@ import java.util.Optional;
     private final UserService userService;
     @Autowired
     private final CometChatService cometChatService;
+    private String jwtSecret;
+
 
     private UserController(UserService userService, CometChatService cometChatService) {
         this.userService = userService;
@@ -54,9 +62,29 @@ import java.util.Optional;
         }
         return ResponseEntity.ok(savedUser);
     }
+
     //Endpoint http://localhost:8080/api/users/login
     @PostMapping("/login")
-    public Optional<ResponseEntity<User>> loginUser(@RequestBody LoginRequest loginRequest) {
-        return userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword()).map(ResponseEntity::ok);
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
+
+        try {
+             User user = userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword());
+
+            String jwt = Jwts.builder()
+                    .setSubject(user.getEmail())
+                    .claim("id", user.getId())
+                    .claim("cometchatUID", user.getCometchatUID())
+                    .setIssuedAt(new Date())
+                    .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
+                    .signWith(SignatureAlgorithm.HS256, jwtSecret)
+                    .compact();
+
+            Map<String, String> response = new HashMap<>();
+            response.put("token", jwt);
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+        }
     }
 }

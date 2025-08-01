@@ -12,6 +12,8 @@
   "dependencies": {
     "@cometchat/chat-sdk-javascript": "^4.0.13",
     "@cometchat/chat-uikit-react": "^6.1.1",
+    "esbuild": "^0.25.8",
+    "jwt-decode": "^4.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.60.0",

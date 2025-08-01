@@ -1,5 +1,6 @@
 package com.example.socalsync.service;
 
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -36,18 +37,21 @@ public class CometChatService {
 
     public void registerUserWithCometChat (String uid, String name){
 
-        if (uid == null || uid.trim().isEmpty()) try {
-            throw new IllegalAccessException("CometChat UID is required");
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
+        if (uid == null || uid.trim().isEmpty()) {
+            try {
+                throw new IllegalAccessException("CometChat UID is required");
+            } catch (IllegalAccessException e) {
+                throw new RuntimeException(e);
+            }
         }
+
         //build headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("appId", appId);
         headers.set("apikey", apiKey);
         headers.set("accept","application/json");
-        headers.set("content-Type", "application/json");
+
 
 
         //build request body

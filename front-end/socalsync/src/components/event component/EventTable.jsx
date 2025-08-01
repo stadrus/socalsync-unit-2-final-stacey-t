@@ -1,11 +1,15 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useContext, useEffect, useState } from "react";
 import ReadRow from "./ReadRow";
 import EditRow from "./EditRow";
 import './eventTable.css';
+import { UserContext } from "../../context/UserContext";
 
 //Using a table I will display the event details.//
 
 const EventTable = () =>{
+    const {user} = useContext (UserContext);
+    const userId = user?.id;
+
     const [events, setEvents] = useState([]);
 
     const [addFormData, setAddFormData] =useState({
@@ -25,7 +29,9 @@ const EventTable = () =>{
     useEffect(() => {
         const fetchEvents = async () =>{
             try{
-                const response = await fetch(`api/events/user/${userId}`);
+                
+
+                const response = await fetch(`http://localhost:8080/api/events/user/${userId}`);
                 const data = await response.json();
                 setEvents (data);
             } catch (error){
@@ -33,7 +39,7 @@ const EventTable = () =>{
             }
         };
         fetchEvents();
-    }, []);
+    }, [userId]);
 
     const handleAddFormChange = (e) =>{
         const {name, value} = e.target;
@@ -54,11 +60,12 @@ const EventTable = () =>{
         };
 
         try{
-            const response = await fetch(`/api/events/${userId}`,{
+            const response = await fetch(`http://localhost:8080/api/events/user/${userId}`,{
                 method: "POST",
                 headers: {"Content-type":"application/json"},
                 body: JSON.stringify(newEvent),
             });
+
             if(!response.ok) throw new Error("Faild to add event");
 
             const savedEvent = await response.json();
@@ -82,7 +89,7 @@ const EventTable = () =>{
         };
 
         try{
-            const response = await fetch(`/api/events/${editEventId}`,{
+            const response = await fetch(`http://localhost:8080/api/events/${editEventId}`,{
                 method: "PUT",
                 headers: {"Content-type":"application/json"},
                 body: JSON.stringify(editedEvent),
@@ -116,7 +123,7 @@ const EventTable = () =>{
 
     const handleDeleteClick = async (eventId) =>{
         try{
-            const response = await fetch(`/api/events/${eventId}`,{
+            const response = await fetch(`http://localhost:8080/api/events/${eventId}`,{
                 method: "DELETE",
             });
             if(!response.ok) throw new Error("Faild to delete event");

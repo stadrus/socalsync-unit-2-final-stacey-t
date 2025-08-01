@@ -60,7 +60,7 @@ function Register () {
             navigate('/Login');
 
         } catch (error){
-            console.error('Registration error:', error);
+            
             setMessage('Registration failed');
         }
         

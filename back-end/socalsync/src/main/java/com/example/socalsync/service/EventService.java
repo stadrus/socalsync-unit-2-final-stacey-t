@@ -39,6 +39,8 @@ public class EventService {
     }
 
 
+
+
     public List<EventResponseDTO> getUserEvents(int userId) {
         return eventRepository.findByUserId(userId).stream().map(this::mapToResponseDTO).collect(Collectors.toList());
     }
