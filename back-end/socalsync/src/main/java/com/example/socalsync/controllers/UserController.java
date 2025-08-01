@@ -4,33 +4,30 @@ import com.example.socalsync.models.dto.LoginRequest;
 import com.example.socalsync.models.dto.RegisterRequest;
 import com.example.socalsync.service.CometChatService;
 import com.example.socalsync.models.User;
-
 import com.example.socalsync.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
+
+@CrossOrigin(origins = "*")
 @RestController
     @RequestMapping("/api/user")
     public class UserController {
 
+    @Autowired
     private final UserService userService;
+    @Autowired
     private final CometChatService cometChatService;
 
-    @Autowired
-    public UserController(UserService userService, CometChatService cometChatService) {
+    private UserController(UserService userService, CometChatService cometChatService) {
         this.userService = userService;
         this.cometChatService = cometChatService;
     }
 
     //POST a new user one registration is complete
-    //Endpoint http:localhost:8081/api/users/register
+    //Endpoint http:localhost:8080/api/users/register
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request) {
         if (userService.existsByEmail(request.getEmail())) {
@@ -43,18 +40,21 @@ import java.util.Optional;
         newUser.setEmail(request.getEmail());
         newUser.setPassword(request.getPassword());
 
-
         User savedUser = userService.register(newUser);
+
+        String cometchatUID = "user_" + savedUser.getId();
+        savedUser.setCometchatUID(cometchatUID);
+        userService.updateUser(savedUser);
 
         try {
             //save UID to user record and update
-            cometChatService.registerUserWithCometChat(savedUser.getEmail(), savedUser.getName());
+            cometChatService.registerUserWithCometChat(cometchatUID, savedUser.getName());
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body("Error registering user:" + e.getMessage());
         }
         return ResponseEntity.ok(savedUser);
     }
-
+    //Endpoint http:localhost:8080/api/users/login
     @PostMapping("/login")
     public Optional<ResponseEntity<User>> loginUser(@RequestBody LoginRequest request) {
         return userService.authenticate(request.getEmail(), request.getPassword()).map(ResponseEntity::ok);

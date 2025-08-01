@@ -18,7 +18,7 @@ public class Event {
 
 
     @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    @JoinColumn(name = "id", referencedColumnName = "id")
     private User user;
 
 

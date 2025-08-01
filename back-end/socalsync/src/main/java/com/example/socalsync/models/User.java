@@ -10,33 +10,23 @@ public class User {
     private int id;
     private String name;
 
-    //columns for table
-    @Column(name = "username")
-    private String username;
-    @Column(name = "email", unique = true)
     private String email;
-    @Column(name = "password")
     private String password;
-    @Column(unique = true)
     private String cometchatUID;
 
     //constructors
-
-    public User( ) {};
-
-    public User (String cometchatUID) {
+    public User(String cometchatUID, String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
         this.cometchatUID = cometchatUID;
     }
 
-    public User(String name, String username, String email, String password) {
-        this.name = name;
-        this.username = username;
-        this.email = email;
-        this.password = password;
+    public User() {
+
     }
 
     //getters and setters
-
 
     public int getId() {
         return id;
@@ -49,14 +39,6 @@ public class User {
     public String getName() {return name;}
 
     public void setName(String name) {this.name = name;}
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 
     public String getEmail() {
         return email;

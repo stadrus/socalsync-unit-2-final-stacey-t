@@ -25,7 +25,7 @@ public class EventController {
     }
 
     //Create Event
-    //Endpoint http:localhost:8081/api/events/user/{userId}
+    //Endpoint http:localhost:8080/api/events/user/{userId}
     @PostMapping("/user/{userId}")
     public ResponseEntity<EventResponseDTO> createEvent(@PathVariable int userId, @RequestBody EventDTO eventDTO) {
         EventResponseDTO createdEvent = eventService.createEvent(userId, eventDTO);
@@ -33,7 +33,7 @@ public class EventController {
     }
 
     //Get all events
-    //Endpoint http:localhost:8081/api/events/user/{userId}
+    //Endpoint http:localhost:8080/api/events/user/{userId}
     @GetMapping("/user/{userId}")
     public ResponseEntity<List<EventResponseDTO>> getAllUserEvents(@PathVariable int userId) {
         List<EventResponseDTO> events = eventService.getAllUserEventsByUserId(userId);
@@ -41,7 +41,7 @@ public class EventController {
     }
 
     //GET Single Event
-    //Endpoint http:localhost:8081/api/{eventId}
+    //Endpoint http:localhost:8080/api/events/{eventId}
     @GetMapping("/{eventId}")
     public ResponseEntity<EventResponseDTO> getEventByID(@PathVariable int eventId) {
         EventResponseDTO event = eventService.getEventById(eventId);
@@ -49,7 +49,7 @@ public class EventController {
     }
 
     //Update Event
-    //Endpoint http:localhost:8081/api/events/{eventId}
+    //Endpoint http:localhost:8080/api/events/{eventId}
     @PutMapping("/{eventId}")
     public ResponseEntity<EventResponseDTO> updateEvent(@PathVariable int eventId, @RequestBody EventDTO eventDTO) {
         EventResponseDTO updated = eventService.updateEvent(eventId, eventDTO);
@@ -57,7 +57,7 @@ public class EventController {
     }
 
     //Delete Event
-    //Endpoint http:localhost:8081/api/events/{eventId}
+    //Endpoint http:localhost:8080/api/events/{eventId}
     @DeleteMapping("/{eventId}")
     public ResponseEntity<?> deleteEvent(@PathVariable int eventId) {
         eventService.deleteEvent(eventId);

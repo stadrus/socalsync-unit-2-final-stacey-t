@@ -19,6 +19,7 @@ import java.util.Map;
 @Service
 public class CometChatService {
 
+    private final RestTemplate restTemplate;
 
     //Stored Env Var to hide APP ID and API Key
     @Value("${CHAT_APP_ID}")
@@ -26,16 +27,29 @@ public class CometChatService {
     @Value("${CHAT_API_KEY}")
     private String apiKey;
 
-    private static final String COMETCHAT_URL = "https://api-us.cometchat.io/v3/users";
+
+    private static final String COMETCHAT_URL = "https://27925714ca768ccc.api-us.cometchat.io/v3/users";
+
+    public CometChatService(RestTemplate restTemplate){
+        this.restTemplate = restTemplate;
+    }
 
     public void registerUserWithCometChat (String uid, String name){
-        RestTemplate restTemplate = new RestTemplate();
 
-      //build headers
+        if (uid == null || uid.trim().isEmpty()) try {
+            throw new IllegalAccessException("CometChat UID is required");
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        }
+        //build headers
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("appId", appId);
-        headers.set("apiKey", apiKey);
+        headers.set("apikey", apiKey);
+        headers.set("accept","application/json");
+        headers.set("content-Type", "application/json");
+
+
         //build request body
         Map<String, Object> requestBody = new HashMap<>();
         requestBody.put("uid", uid);

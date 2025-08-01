@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
+import { CometChatUIKit } from '@cometchat/chat-uikit-react';
 import './Register.css';
-import { COMETCHAT_CONSTANTS } from '../../cometchat.config';
-import { CometChat } from '@cometchat/chat-sdk-javascript';
+
 
 function Register () {
   
@@ -27,7 +27,8 @@ function Register () {
      const handlePassword = (e) =>{
         setPassword(e.target.value);
     }
-   //submit button should create a new user everytime someone registers an account//
+    
+    //submit button should create a new user everytime someone registers an account//
     const handleSubmit = async (e) => {
         e.preventDefault();
         
@@ -35,24 +36,26 @@ function Register () {
             setMessage("Please fill in all fields");
             return;
         }
+        
+        const cometchatUID = email.replace(/[^a-zA-Z0-9]/g, "_");
 
         try{
-            const response = await fetch('http://localhost:8080/api/auth/register',{
+            const response = await fetch('http://localhost:8080/api/user/register',{
                 method: 'POST',
                 headers: {'Content-type': 'application/json'},
-                body: JSON.stringify({name,email,password})
+                body: JSON.stringify({name, email, password, cometchatUID})
             });
 
+
             if(!response.ok){
-                throw new Error("Failed to register with backend");
+                const errorData = await response.json();
+                throw new Error(errorData.message || "Failed to register with backend");
             }
 
-            const user = await response.json();
-
-            const cometChatUser = new CometChat.User(user.email);
-            cometChatUser.setName(user.name);
-
-            await CometChat.createUser(cometChatUser, COMETCHAT_CONSTANTS.AUTH_KEY);
+            const cometUser = await CometChatUIKit.getLoggedinUser();
+            if(!cometUser || cometUser.uid !== UID){
+                await CometChatUIKit.login(UID);
+            }
 
             setMessage("Registration complete");
             navigate('/Login');
@@ -60,11 +63,7 @@ function Register () {
             console.error('Registration error:', error);
             setMessage('Registration failed');
         }
-        const emailExists = userData.find(user => user.email === email);
-        if(emailExists){
-            setMessage("Email already registered.");
-            return;
-        }
+        
     };
     return (
         <div className='register-wrapper'>

@@ -6,6 +6,7 @@ import com.example.socalsync.repositories.UserRepository;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Optional;
 //handles the logic related to user authentication and password
 @Service
@@ -25,6 +26,13 @@ public class UserService {
     }
     public boolean existsByEmail(String email){
         return userRepository.findByEmail(email).isPresent();
+    }
+
+    public Optional <User> findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public void updateUser(User savedUser) {
     }
 }
 //Reference this GeeksforGeeks article to add BCryptPasswordEncoder.

@@ -12,24 +12,27 @@ function Login () {
     //create a function that alerts user of login status based on the stored email and password matching the localstorage data.//
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setMessage('');
         
         try{
-            const response = await fetch("http://localhost:8080/api/auth/login", {
+            const response = await fetch("http://localhost:8080/api/user/login", {
                 method: "POST",
                 headers: {"content-Type": "application/json"},
                 body: JSON.stringify({email,password})
             });
+            
             if(!response.ok){
-                throw new Error('Invaild login');
+                throw new Error('Invalid login');
             }
 
             const user = await response.json();
-            const UID = user.email;
+            const UID = user.cometchatUID;
 
             const cometUser = await CometChatUIKit.getLoggedinUser();
-            if(!cometUser){
+            if(!cometUser || cometUser.uid !== UID){
                 await CometChatUIKit.login(UID);
             }
+
             navigate('/Dashboard');
         } catch (error) {
             console.error('Login failed:', error);
@@ -56,6 +59,7 @@ function Login () {
                         placeholder="Enter Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        required
                         />
                         
                         <input 
@@ -63,7 +67,7 @@ function Login () {
                         type="password" 
                         placeholder="Enter Password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)} required
                         />
                         <button className="submit-button" type="submit">Submit</button><br></br>
                         <button className="register-button" type="button" onClick={handleClick}>Register</button> 
