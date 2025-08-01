@@ -9,5 +9,4 @@ public class SocalsyncApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(SocalsyncApplication.class, args);
 	}
-
 }

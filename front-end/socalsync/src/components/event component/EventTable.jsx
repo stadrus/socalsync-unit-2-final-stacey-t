@@ -1,16 +1,12 @@
-import data from "../../data/mock-data.json";
-import { Fragment, useState } from "react";
-import { nanoid } from "nanoid";
+import { Fragment, useEffect, useState } from "react";
 import ReadRow from "./ReadRow";
 import EditRow from "./EditRow";
-import { setItem } from "../../utils/localStorage";
-import usePersistedState from "../../hooks/usePersistedState";
 import './eventTable.css';
 
 //Using a table I will display the event details.//
-// table complete added localstorage to store data. reference https://medium.com/@roman_j/mastering-state-persistence-with-local-storage-in-react-a-complete-guide-1cf3f56ab15c//
+
 const EventTable = () =>{
-    const [events, setEvents] = usePersistedState('events', data);
+    const [events, setEvents] = useState([]);
 
     const [addFormData, setAddFormData] =useState({
     title:"",
@@ -26,44 +22,56 @@ const EventTable = () =>{
 
     const [editEventId, setEditEventId] = useState(null);
 
+    useEffect(() => {
+        const fetchEvents = async () =>{
+            try{
+                const response = await fetch(`api/events/user/${userId}`);
+                const data = await response.json();
+                setEvents (data);
+            } catch (error){
+                console.error("Faild to fetch events:", error);
+            }
+        };
+        fetchEvents();
+    }, []);
+
     const handleAddFormChange = (e) =>{
-    e.preventDefault();
-        
-    const fieldName = e.target.getAttribute("name");
-    const fieldValue = e.target.value;
-        
-    const newFormData = { ...addFormData };
-    newFormData[fieldName] = fieldValue;
-    
-    setAddFormData(newFormData);
+        const {name, value} = e.target;
+    setAddFormData((previousState) => ({...previousState, [name]: value}));  
     };
 
     const handleEditFormChange = (e) =>{
-        e.preventDefault();
-        const fieldName = e.target.getAttribute("name");
-        const fieldValue = e.target.value;
-
-        const newFormData = { ...editFormData };
-        newFormData[fieldName] = fieldValue;
-        
-        setEditFormData(newFormData); 
+        const {name, value} = e.target;
+    setEditFormData((previousState) => ({...previousState, [name]: value}));
     };
     
-    const handleAddFormSubmit = (e) =>{
+    const handleAddFormSubmit = async (e) =>{
     e.preventDefault();
-
     const newEvent ={
-        id: nanoid(),
         title: addFormData.title,
         details: addFormData.details,
         date: addFormData.date,
         };
-        const newEvents = [...events, newEvent];
-        setEvents(newEvents);
-        setItem("events", newEvents);
+
+        try{
+            const response = await fetch(`/api/events/${userId}`,{
+                method: "POST",
+                headers: {"Content-type":"application/json"},
+                body: JSON.stringify(newEvent),
+            });
+            if(!response.ok) throw new Error("Faild to add event");
+
+            const savedEvent = await response.json();
+
+            setEvents((previousState) => [...previousState, savedEvent]);
+            setAddFormData({title:"", details:"", date:""})
+        }catch (error) {
+            console.error("Add event failed:", error);
+        }
+       
     };
 
-    const handleEditFormSubmit = (e) =>{
+    const handleEditFormSubmit = async (e) =>{
         e.preventDefault();
 
     const editedEvent ={
@@ -73,13 +81,21 @@ const EventTable = () =>{
         date: editFormData.date,
         };
 
-        const newEvents = [...events];
-        const index = events.findIndex((event)=>event.id === editEventId);
+        try{
+            const response = await fetch(`/api/events/${editEventId}`,{
+                method: "PUT",
+                headers: {"Content-type":"application/json"},
+                body: JSON.stringify(editedEvent),
+            });
+            if(!response.ok) throw new Error("Faild to edit event");
 
-        newEvents[index] = editedEvent;
-        setEvents(newEvents);
-        setEditEventId(null);
-        setItem("events", newEvents);
+            const updated = await response.json();
+
+            setEvents((previousState) => previousState.map((ev) => ev.id === updated.id ? updated : ev));
+            setEditEventId(null);
+        }catch (error) {
+            console.error("Updated event failed:", error);
+        }
     };
     
 
@@ -96,12 +112,20 @@ const EventTable = () =>{
     const handleCancelClick = () =>{
         setEditEventId(null);
     };
-    const handleDeleteClick =(eventsId) =>{
-        const newEvents = [...events];
-        const index = events.findIndex((events)=> events.id === eventsId);
-        newEvents.splice(index, 1);
-        setEvents(newEvents);
-        setItem("events", newEvents);
+
+
+    const handleDeleteClick = async (eventId) =>{
+        try{
+            const response = await fetch(`/api/events/${eventId}`,{
+                method: "DELETE",
+            });
+            if(!response.ok) throw new Error("Faild to delete event");
+
+          setEvents((previousState) => previousState.filter((e) => e.id !== eventId));
+            setEditEventId(null);
+        }catch (error) {
+            console.error("Deleted event failed:", error);
+        }
     };
 
     return (
@@ -112,7 +136,7 @@ const EventTable = () =>{
                         <tr>
                             <th>Event Title</th>
                             <th>Event Details</th>
-                            <th>Event Date</th>
+                            <th>Event Date and Time</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -128,24 +152,27 @@ const EventTable = () =>{
                 </table>
             </form>
             <h2>Add Event</h2>
-            <form onSubmit={handleAddFormSubmit}>
+            <form  className ="add-form" onSubmit={handleAddFormSubmit}>
                 <input 
                     type="text"
                     name="title"
                     required="required"
                     placeholder="Enter a event title"
+                    value={addFormData.title}
                     onChange = {handleAddFormChange}/>
                 <input 
                     type="text"
                     name="details"
                     required="required"
                     placeholder="Enter event details"
+                    value={addFormData.details}
                     onChange = {handleAddFormChange}/>
                 <input 
-                    type='date'
+                    type="datetime-local"
                     name="date"
                     required="required"
-                    placeholder="Enter a date"
+                    value={addFormData.date}
+                    placeholder="Enter a date and start time"
                     onChange = {handleAddFormChange}/>
                 <button type='submit'>Add</button>
             </form>

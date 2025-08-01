@@ -8,27 +8,26 @@ import Register from '../src/components/user component/Register'
 import Login from '../src/components/user component/Login'
 import Dashboard from '../src/components/user component/Dashboard'
 import EventTable from '../src/components/event component/EventTable'
-
-
+import './components/cometchat component/cometchat'
+import Chat from './components/cometchat component/Chat'
 
 
 function App() {
- 
+  
   return (
     <>
       <BrowserRouter>
         <Header />
-      <div>
-      </div>
       <div>
         <Routes>
           <Route path ='/' element={<Home />}/>
           <Route path ='/Home' element={<Home />}/>
           <Route path ='/About' element={<About />}/>
           <Route path='/Register' element={<Register />}/>
-          <Route path='Login' element={<Login />}/>
+          <Route path='/Login' element={<Login />}/>
           <Route path='/Dashboard' element={<Dashboard/>}/>
-          <Route path='/EventList' element={<EventTable />}></Route>
+          <Route path='/EventList' element={<EventTable />}/>
+          <Route path='/Chat' element={<Chat />}></Route>
         </Routes>
       </div>
         <Footer />

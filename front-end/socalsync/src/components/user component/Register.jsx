@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router';
-import { useEffect, useState } from 'react';
-import { setItem, getItem } from '../../utils/localStorage';
+import { useState } from 'react';
+import { CometChatUIKit } from '@cometchat/chat-uikit-react';
 import './Register.css';
+
 
 function Register () {
   
@@ -10,25 +11,11 @@ function Register () {
     const [email, setEmail] = useState('');
     const [password,setPassword] = useState('');
 
-    //create useState for userData to add new user in local storage in an array//
-    const [userData, setUserData] = useState(() =>{
-        const stored =getItem('userData');
-        return Array.isArray(stored) ? stored : [];
-    });
-
     // created a message state to replace js "alert" and add styling.
     const [message, setMessage] = useState('');
     
     //useNavigate will navigate user to Login once registration in complete.//
     const navigate = useNavigate();
-
-    // localStorage.setItem('user', setUserData);
-    //further research on localstorage propmt me to use, useEffect.//
-    useEffect (() => {
-       setItem('userData', userData);
-  
-    },[userData]);
-   
 
     //create onChange elements for each key e.targt.value setStateName(key)
     const handleName = (e) =>{
@@ -40,43 +27,43 @@ function Register () {
      const handlePassword = (e) =>{
         setPassword(e.target.value);
     }
-   //submit button should create a new user everytime someone registers an account//
-    const handleSubmit = (e) => {
+    
+    //submit button should create a new user everytime someone registers an account//
+    const handleSubmit = async (e) => {
         e.preventDefault();
         
         if (name === '' || email === '' || password === ''){
             setMessage("Please fill in all fields");
             return;
         }
-        const emailExists = userData.find(user => user.email === email);
-        if(emailExists){
-            setMessage("Email already registered.");
-            return;
-        }
-
-        const newUser = { name, email, password };//should produce a new user//
-        setUserData(prev => [...prev, newUser]);
-        setMessage("Registration Complete");
-
-        //clear the form after input//
-        setName('');
-        setEmail('');
-        setPassword('');
         
-        fetch("https://reqres.in/api/users", {
-        method: "POST",
-        headers: {
-            "x-api-key": "reqres-free-v1",
-            "Content-Type": "application/json"
-        },
-            body: JSON.stringify(newUser)
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data);
-            navigate('/Login'); 
-        })
-        .catch(error => console.error("Registration error:", error))
+        try{
+            const response = await fetch("http://localhost:8080/api/user/register",{
+                method: "POST",
+                headers: {"Content-type": "application/json"},
+                body: JSON.stringify({name, email, password})
+            });
+            
+            const user = await response.json();
+            const UID = user.cometchatUID;
+
+            if(!response.ok){
+                throw new Error("Failed to register with backend");
+            }
+
+            const cometUser = await CometChatUIKit.getLoggedinUser();
+            if(!cometUser || cometUser.uid !== UID){
+                await CometChatUIKit.login(UID);
+            }
+
+            setMessage("Registration complete");
+            navigate('/Login');
+
+        } catch (error){
+            console.error('Registration error:', error);
+            setMessage('Registration failed');
+        }
+        
     };
     return (
         <div className='register-wrapper'>

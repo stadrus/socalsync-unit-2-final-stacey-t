@@ -1,13 +1,13 @@
 body{
-    margin: 0;
-    padding: 0;
+    margin: 1rem;
+    padding: 1rem;
     overflow-x: hidden;
     font-family: 'Poppins', sans-serif;
     background: #005fea;
     background: linear-gradient(135deg, #08ddaf 0%, #00c6ff 100%);
     min-height: 100vh;   
 }
-
+/*alerts users during login*/
 .form-message{
     margin-top: 10px;
     color: #f44336;
@@ -83,6 +83,7 @@ footer{
   color: #1e1932;
   text-align: center;
 }
+
 
 @media (max-width: 600px) {
     .logo{

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import './sharebutton.css'
+
 //this component is used to create a share button for multiple platforms. making it easy for the user to share the data. Reference code https://www.addtoany.com/buttons/for/website. 
 const ShareButton = () =>{
     useEffect(() =>{
@@ -15,12 +16,11 @@ const ShareButton = () =>{
 
     return (
         <>
-        <div className="addtoany-container">
-         <a className="a2a_dd" href="https://www.addtoany.com/share">
-            <i className="fa-solid fa-share"></i>
-         </a>
-            <script defer src="https://static.addtoany.com/menu/page.js"></script>
+        <div className="a2a_kit a2a_kit_size_32 a2a_default_style">
+            <a className="a2a_dd" href="https://www.addtoany.com/share"></a>
         </div>
+        <script defer src="https://static.addtoany.com/menu/page.js"></script>
+       
        </> 
     );
 };

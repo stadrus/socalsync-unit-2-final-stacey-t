@@ -1,30 +1,42 @@
 import { useNavigate } from "react-router";
-import { getItem } from "../../utils/localStorage";
 import { useState } from "react";
 import './Login.css'
+import { CometChatUIKit } from "@cometchat/chat-uikit-react";
 
 function Login () {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    const storedUsers = Array.isArray(getItem('userData')) ?getItem('userData') : [];
 
-   
-
-    
     //create a function that alerts user of login status based on the stored email and password matching the localstorage data.//
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-
-        //this variable uses .find() to find the first matching element in the array. 
-        const registerdUser = storedUsers.find(user => user.email === email && user.password === password);
+        setMessage('');
         
-        if (registerdUser){
-            setMessage("Login Successful");
+        try{
+            const response = await fetch("http://localhost:8080/api/user/login", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ email, password})
+            });
+            
+            if(!response.ok){
+                throw new Error('Invalid login');
+            }
+
+            const user = await response.json();
+            const UID = user.cometchatUID;
+
+            const cometUser = await CometChatUIKit.getLoggedinUser();
+            if(!cometUser || cometUser.uid !== UID){
+                await CometChatUIKit.login(UID);
+            }
+
             navigate('/Dashboard');
-        } else{
-            setMessage("Email or password is invalid");
+        } catch (error) {
+            console.error('Login failed:', error);
+            setMessage('Login failed');
         }
     };
 
@@ -47,6 +59,7 @@ function Login () {
                         placeholder="Enter Email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        required
                         />
                         
                         <input 
@@ -54,10 +67,11 @@ function Login () {
                         type="password" 
                         placeholder="Enter Password"
                         value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => setPassword(e.target.value)} required
                         />
                         <button className="submit-button" type="submit">Submit</button><br></br>
-                        <button className="register-button" type="button" onClick={handleClick}>Register</button> {message && <p className="form-message">{message}</p>}
+                        <button className="register-button" type="button" onClick={handleClick}>Register</button> 
+                        {message && <p className="form-message">{message}</p>}
                     </div>
                     </form>
                </div>
