@@ -27,7 +27,7 @@ import java.util.Optional;
     }
 
     //POST a new user one registration is complete
-    //Endpoint http:localhost:8080/api/users/register
+    //Endpoint http://localhost:8080/api/user/register
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody RegisterRequest request) {
         if (userService.existsByEmail(request.getEmail())) {
@@ -54,9 +54,9 @@ import java.util.Optional;
         }
         return ResponseEntity.ok(savedUser);
     }
-    //Endpoint http:localhost:8080/api/users/login
+    //Endpoint http://localhost:8080/api/users/login
     @PostMapping("/login")
-    public Optional<ResponseEntity<User>> loginUser(@RequestBody LoginRequest request) {
-        return userService.authenticate(request.getEmail(), request.getPassword()).map(ResponseEntity::ok);
+    public Optional<ResponseEntity<User>> loginUser(@RequestBody LoginRequest loginRequest) {
+        return userService.authenticate(loginRequest.getEmail(), loginRequest.getPassword()).map(ResponseEntity::ok);
     }
 }
