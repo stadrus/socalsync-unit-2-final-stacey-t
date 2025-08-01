@@ -37,19 +37,18 @@ function Register () {
             return;
         }
         
-        const cometchatUID = email.replace(/[^a-zA-Z0-9]/g, "_");
-
         try{
-            const response = await fetch('http://localhost:8080/api/user/register',{
-                method: 'POST',
-                headers: {'Content-type': 'application/json'},
-                body: JSON.stringify({name, email, password, cometchatUID})
+            const response = await fetch("http://localhost:8080/api/user/register",{
+                method: "POST",
+                headers: {"Content-type": "application/json"},
+                body: JSON.stringify({name, email, password})
             });
-
+            
+            const user = await response.json();
+            const UID = user.cometchatUID;
 
             if(!response.ok){
-                const errorData = await response.json();
-                throw new Error(errorData.message || "Failed to register with backend");
+                throw new Error("Failed to register with backend");
             }
 
             const cometUser = await CometChatUIKit.getLoggedinUser();
@@ -59,6 +58,7 @@ function Register () {
 
             setMessage("Registration complete");
             navigate('/Login');
+
         } catch (error){
             console.error('Registration error:', error);
             setMessage('Registration failed');
