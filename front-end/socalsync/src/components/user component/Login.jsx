@@ -1,15 +1,16 @@
 import { useNavigate } from "react-router";
 import { useContext, useState } from "react";
-import './Login.css'
 import { CometChatUIKit } from "@cometchat/chat-uikit-react";
 import { UserContext } from "../../context/UserContext";
+import { jwtDecode } from "jwt-decode";
+import './Login.css'
 
 function Login () {
     const navigate = useNavigate();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    const [setUser] = useContext(UserContext);
+    const {loginContext} =useContext(UserContext);
 
     //create a function that alerts user of login status based on the stored email and password matching the localstorage data.//
     const handleSubmit = async (e) => {
@@ -27,10 +28,11 @@ function Login () {
                 throw new Error('Invalid login');
             }
 
-            const user = await response.json();
-            setUser(user);
-            
-            const UID = user.cometchatUID;
+            const data = await response.json();
+            loginContext(data.token);
+
+            const UID = jwtDecode(data.token).cometchatUID;
+             
 
             const cometUser = await CometChatUIKit.getLoggedinUser();
             if(!cometUser || cometUser.uid !== UID){

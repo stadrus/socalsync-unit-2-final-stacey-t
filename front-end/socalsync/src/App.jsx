@@ -1,21 +1,23 @@
 import { BrowserRouter, Routes, Route } from 'react-router'
-import './App.css'
-import Header from '../../../front-end/socalsync/src/components/page component/Header'
-import Footer from '../../../front-end/socalsync/src/components/page component/Footer'
-import Home from '../../../front-end/socalsync/src/components/page component/Home'
-import About from '../../../front-end/socalsync/src/components/page component/About'
-import Register from '../src/components/user component/Register'
-import Login from '../src/components/user component/Login'
-import Dashboard from '../src/components/user component/Dashboard'
-import EventTable from '../src/components/event component/EventTable'
-import './components/cometchat component/cometchat'
+import Header from './components/page component/Header'
+import Footer from './components/page component/Footer'
+import Home from './components/page component/Home'
+import About from './components/page component/About'
+import Register from './components/user component/Register'
+import Login from './components/user component/Login'
+import Dashboard from './components/user component/Dashboard'
+import EventTable from './components/event component/EventTable'
 import Chat from './components/cometchat component/Chat'
+import './components/cometchat component/cometchat'
+import { UserProvider } from './context/UserContext'
+import './App.css'
 
 
 function App() {
   
   return (
     <>
+    <UserProvider>
       <BrowserRouter>
         <Header />
       <div>
@@ -32,6 +34,7 @@ function App() {
       </div>
         <Footer />
       </BrowserRouter>
+    </UserProvider>
     </>
   )
 }
