@@ -1,16 +1,13 @@
-import { useNavigate } from "react-router";
 import EventTable from "../event component/EventTable";
 import ShareButton from './ShareButton'
-import './dashboard.css'
 import Chat from "../cometchat component/Chat";
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
+import './dashboard.css'
 
 const Dashboard = () => {
+    const {handleLogoutClick} = useContext(UserContext);
 
-    const navigate = useNavigate();
-    const handleLogoutClick = () => {
-    navigate ('../Home');
-    };
-    
     return(
         <div>
         <div className="dashboard-container">

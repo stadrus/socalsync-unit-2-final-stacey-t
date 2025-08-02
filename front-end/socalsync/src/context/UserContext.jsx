@@ -1,40 +1,44 @@
 import { createContext, useState } from "react";
 import { jwtDecode } from 'jwt-decode';
 import { useEffect } from "react";
+import { Navigate } from "react-router";
 
 export const UserContext = createContext();
 
 export const UserProvider = ({children}) =>{
     const [user, setUser] = useState (null);
-
+    
     useEffect(() =>{
         const token = localStorage.getItem("token");
         if(token){
-        const decoded = jwtDecode(token);
+            const decoded = jwtDecode(token);
             setUser({
-            token: userData.token,
-            email: decoded.sub,
-            id: decoded.id,
-            cometchatUID: decoded.cometchatUID,
+                token: userData.token,
+                email: decoded.sub,
+                id: decoded.id,
+                cometchatUID: decoded.cometchatUID,
             });
         }
     },[]);
-
+    
     const loginContext = (token) =>{
         const decoded = jwtDecode(token);
         localStorage.setItem("token", token);
         setUser({ token, ...decoded});
     };
-
-    const logout = () =>{
+    
+    const handleLogoutClick = () =>{
         localStorage.removeItem("token");
         setUser(null);
+        
+        const navigate = useNavigate();
+        navigate ('../Home');
     };
 
 
     return(
         <UserContext.Provider 
-        value ={{user, setUser, loginContext, logout}}>{children}
+        value ={{user, setUser, loginContext, handleLogoutClick}}>{children}
         </UserContext.Provider>
     )
 }
