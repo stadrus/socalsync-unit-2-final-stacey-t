@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
 import Header from './components/page component/Header'
 import Footer from './components/page component/Footer'
 import Home from './components/page component/Home'
@@ -9,15 +9,17 @@ import Dashboard from './components/user component/Dashboard'
 import EventTable from './components/event component/EventTable'
 import Chat from './components/cometchat component/Chat'
 import './components/cometchat component/cometchat'
-import { UserProvider } from './context/UserContext'
+import { UserContext } from './context/UserContext'
 import './App.css'
+import { useContext} from 'react'
 
 
 function App() {
+
+ const { user } = useContext(UserContext);
   
   return (
     <>
-    <UserProvider>
       <BrowserRouter>
         <Header />
       <div>
@@ -26,15 +28,14 @@ function App() {
           <Route path ='/Home' element={<Home />}/>
           <Route path ='/About' element={<About />}/>
           <Route path='/Register' element={<Register />}/>
-          <Route path='/Login' element={<Login />}/>
-          <Route path='/Dashboard' element={<Dashboard/>}/>
+          <Route path='/Login' element={ user ? <Navigate to= '/Dashboard' /> : <Login />}/>
+          <Route path='/Dashboard' element={ user ? <Dashboard /> : <Navigate to= '/Login' />} />
           <Route path='/EventList' element={<EventTable />}/>
           <Route path='/Chat' element={<Chat />}></Route>
         </Routes>
       </div>
         <Footer />
       </BrowserRouter>
-    </UserProvider>
     </>
   )
 }

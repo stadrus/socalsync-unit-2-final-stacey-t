@@ -40,16 +40,16 @@ function Register () {
         try{
             const response = await fetch("http://localhost:8080/api/user/register",{
                 method: "POST",
-                headers: {"Content-type": "application/json"},
+                headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({name, email, password})
             });
             
-            const user = await response.json();
-            const UID = user.cometchatUID;
-
             if(!response.ok){
                 throw new Error("Failed to register with backend");
             }
+            const user = await response.json();
+            const UID = user.cometchatUID;
+
 
             const cometUser = await CometChatUIKit.getLoggedinUser();
             if(!cometUser || cometUser.uid !== UID){

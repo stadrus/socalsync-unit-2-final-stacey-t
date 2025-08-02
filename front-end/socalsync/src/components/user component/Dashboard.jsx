@@ -6,7 +6,7 @@ import { UserContext } from "../../context/UserContext";
 import './dashboard.css'
 
 const Dashboard = () => {
-    const {handleLogoutClick} = useContext(UserContext);
+    const {user, handleLogoutClick} = useContext(UserContext);
 
     return(
         <div>
@@ -16,7 +16,8 @@ const Dashboard = () => {
                 <button className="logout-button" type='button' id="Logout" name="Logout" onClick={handleLogoutClick}>Logout</button>
             </header>
             <section className="dashboard-hero">
-                <h1 className="dashboard-header">Welcome to your Dashboard</h1>
+
+                <h1 className="dashboard-header">Welcome, {user.name}</h1>
             </section>
         </div>
         </div>

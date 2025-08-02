@@ -62,7 +62,7 @@ const EventTable = () =>{
         try{
             const response = await fetch(`http://localhost:8080/api/events/user/${userId}`,{
                 method: "POST",
-                headers: {"Content-type":"application/json"},
+                headers: {"Content-Type":"application/json", "Authorization": `Bearer ${user.token}`},
                 body: JSON.stringify(newEvent),
             });
 
@@ -91,7 +91,7 @@ const EventTable = () =>{
         try{
             const response = await fetch(`http://localhost:8080/api/events/${editEventId}`,{
                 method: "PUT",
-                headers: {"Content-type":"application/json"},
+                headers: {"Content-Type":"application/json", "Authorization": `Bearer ${user.token}`},
                 body: JSON.stringify(editedEvent),
             });
             if(!response.ok) throw new Error("Faild to edit event");
@@ -125,6 +125,7 @@ const EventTable = () =>{
         try{
             const response = await fetch(`http://localhost:8080/api/events/${eventId}`,{
                 method: "DELETE",
+                headers: {"Content-Type":"application/json", "Authorization": `Bearer ${user.token}`},
             });
             if(!response.ok) throw new Error("Faild to delete event");
 
