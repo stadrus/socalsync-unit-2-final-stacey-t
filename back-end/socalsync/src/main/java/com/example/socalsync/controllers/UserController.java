@@ -7,7 +7,7 @@ import com.example.socalsync.models.User;
 import com.example.socalsync.service.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,21 +17,22 @@ import java.util.Map;
 
 
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:5173")
 @RestController
     @RequestMapping("/api/user")
     public class UserController {
 
-    @Autowired
     private final UserService userService;
-    @Autowired
     private final CometChatService cometChatService;
+
+    @Value("${jwt.secret}")
     private String jwtSecret;
 
 
     private UserController(UserService userService, CometChatService cometChatService) {
         this.userService = userService;
         this.cometChatService = cometChatService;
+
     }
 
     //POST a new user one registration is complete

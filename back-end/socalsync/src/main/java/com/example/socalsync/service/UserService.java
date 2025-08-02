@@ -27,7 +27,14 @@ public class UserService {
 
 
     public User authenticate(String email, String password) {
-        return null;
+        Optional<User> optionalUser = userRepository.findByEmail(email);
+        if(optionalUser.isPresent()){
+            User user = optionalUser.get();
+            if(passwordEncoder.matches(password, user.getPassword())){
+                return user;
+            }
+        }
+        throw new RuntimeException("Invalid credentials");
     }
 
     public boolean existsByEmail(String email){
@@ -39,6 +46,7 @@ public class UserService {
     }
 
     public void updateUser(User savedUser) {
+        userRepository.save(savedUser);
     }
 
     @Override
