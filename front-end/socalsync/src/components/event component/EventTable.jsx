@@ -30,15 +30,31 @@ const EventTable = () =>{
         const fetchEvents = async () =>{
             try{
                 
+                const response = await fetch(`http://localhost:8080/api/events/user/${userId}`,{
+                    headers: {"Authorization": `Bearer ${user?.token}`},
 
-                const response = await fetch(`http://localhost:8080/api/events/user/${userId}`);
-                const data = await response.json();
-                setEvents (data);
-            } catch (error){
-                console.error("Faild to fetch events:", error);
+                });
+            
+                if(!response.ok){
+                    const errorText = await response.text();
+                    console.error("Fetch failed:", response.status, errorText);
+                    throw new Error("Failed to fetch evetns")
+                }
+
+                const text = await response.text();
+                if(!text){
+                    console.warn("Empty response body");
+                    setEvents([]);
+                    return;
+                }
+                const data = JSON.parse(text);
+                setEvents(data);
+            } catch (error) {
+                console.error("Faild to fetch event:", error);
+
             }
         };
-        fetchEvents();
+        if(userId) fetchEvents();
     }, [userId]);
 
     const handleAddFormChange = (e) =>{

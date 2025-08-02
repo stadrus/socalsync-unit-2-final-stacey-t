@@ -10,7 +10,7 @@ function Login () {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    const {loginContext} =useContext(UserContext);
+    const {user, loginContext} =useContext(UserContext);
 
     //create a function that alerts user of login status based on the stored email and password matching the localstorage data.//
     const handleSubmit = async (e) => {
@@ -20,7 +20,7 @@ function Login () {
         try{
             const response = await fetch("http://localhost:8080/api/user/login", {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+                headers: {"Content-Type":"application/json"},
                 body: JSON.stringify({ email, password})
             });
             
@@ -29,6 +29,10 @@ function Login () {
             }
 
             const data = await response.json();
+            if(!data.token){
+                throw new Error ("No token returned from backend")
+            }
+
             loginContext(data.token);
 
             const UID = jwtDecode(data.token).cometchatUID;
@@ -42,7 +46,7 @@ function Login () {
             navigate('/Dashboard');
         } catch (error) {
             console.error('Login failed:', error);
-            setMessage('Login failed');
+            setMessage('Login failed, please check credentials');
         }
     };
 
