@@ -1,29 +1,37 @@
 package com.example.socalsync.service;
 
 
-import org.springframework.security.core.userdetails.User;
+import com.example.socalsync.models.User;
+import com.example.socalsync.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public CustomUserDetailsService(UserService userService){
-        this.userService = userService;
+@Autowired
+    public CustomUserDetailsService(UserRepository userRepository){
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        com.example.socalsync.models.User user = userService.findByEmail(email).orElseThrow(()-> new UsernameNotFoundException("User not found"));
+       User user = userRepository.findByEmail(email)
+               .orElseThrow(()-> new UsernameNotFoundException("User not found"));
 
-        User.UserBuilder builder = org.springframework.security.core.userdetails.User.withUsername(user.getEmail());
-        builder.password(user.getPassword());
-        builder.roles("USER");
-
-        return builder.build();
+        return new org.springframework.security.core.userdetails.User(
+                user.getEmail(),
+                user.getPassword(),
+                List.of(new SimpleGrantedAuthority("ROLE_USER"))
+        );
     }
 }

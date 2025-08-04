@@ -6,9 +6,11 @@ import com.example.socalsync.models.dto.EventResponseDTO;
 import com.example.socalsync.service.EventService;
 import com.example.socalsync.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @CrossOrigin (origins = "http://localhost:5173")
@@ -16,9 +18,8 @@ import java.util.List;
 @RequestMapping("/api/events")
 public class EventController {
 
-    @Autowired
+
     private final EventService eventService;
-    @Autowired
     private final UserService userService;
 
     @Autowired
@@ -27,18 +28,30 @@ public class EventController {
         this.userService = userService;
     }
 
-    //Create Event
+    //create Event
     //Endpoint http://localhost:8080/api/events/user/{userId}
     @PostMapping("/user/{userId}")
-    public ResponseEntity<EventResponseDTO> createEvent(@PathVariable int userId, @RequestBody EventDTO eventDTO) {
-        EventResponseDTO createdEvent = eventService.createEvent(userId, eventDTO);
-        return ResponseEntity.ok(createdEvent);
-    }
+    public ResponseEntity<?> createEvent(@PathVariable int userId, @RequestBody EventDTO eventDTO, Principal principal) {
+        int authenticatedUserId = userService.getUserFromPrincipal(principal);
 
+        if (authenticatedUserId != userId) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Cannot create event for another user.");
+        }
+
+        EventResponseDTO createdEvent = eventService.createEvent(userId, eventDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdEvent);
+    }
+    
     //Get all events
     //Endpoint http:localhost:8080/api/events/user/{userId}
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<EventResponseDTO>> getAllUserEvents(@PathVariable int userId) {
+    public ResponseEntity<?> getAllUserEvents(@PathVariable int userId, Principal principal) {
+        int authenticatedUserId = userService.getUserFromPrincipal(principal);
+
+        if(authenticatedUserId != userId){
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You cannot view events for another user.");
+        }
+
         List<EventResponseDTO> events = eventService.getAllUserEventsByUserId(userId);
         return ResponseEntity.ok(events);
     }

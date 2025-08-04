@@ -14,7 +14,13 @@ public class User {
     private String password;
     private String cometchatUID;
 
+
+
     //constructors
+
+    public User() {
+    }
+
     public User(String cometchatUID, String name, String email, String password) {
         this.name = name;
         this.email = email;
@@ -22,9 +28,7 @@ public class User {
         this.cometchatUID = cometchatUID;
     }
 
-    public User() {
 
-    }
 
     //getters and setters
 
@@ -59,4 +63,5 @@ public class User {
     public String getCometchatUID() {return cometchatUID;}
 
     public void setCometchatUID(String cometchatUID) {this.cometchatUID = cometchatUID;}
+
 }

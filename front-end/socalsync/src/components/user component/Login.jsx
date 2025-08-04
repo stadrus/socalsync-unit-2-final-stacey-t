@@ -3,19 +3,21 @@ import { useContext, useState } from "react";
 import { CometChatUIKit } from "@cometchat/chat-uikit-react";
 import { UserContext } from "../../context/UserContext";
 import { jwtDecode } from "jwt-decode";
+import {COMETCHAT_CONSTANTS} from '../../cometchat.config'
 import './Login.css'
 
 function Login () {
     const navigate = useNavigate();
+    const {loginContext} =useContext(UserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
-    const {user, loginContext} =useContext(UserContext);
 
     //create a function that alerts user of login status based on the stored email and password matching the localstorage data.//
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage('');
+
         
         try{
             const response = await fetch("http://localhost:8080/api/user/login", {
@@ -33,17 +35,16 @@ function Login () {
                 throw new Error ("No token returned from backend")
             }
 
-            loginContext(data.token);
-
+            loginContext({user: data.user, storedToken: data.token});
             const UID = jwtDecode(data.token).cometchatUID;
              
 
             const cometUser = await CometChatUIKit.getLoggedinUser();
             if(!cometUser || cometUser.uid !== UID){
-                await CometChatUIKit.login(UID);
+                await CometChatUIKit.login(UID, COMETCHAT_CONSTANTS.AUTH_KEY);
             }
-
             navigate('/Dashboard');
+
         } catch (error) {
             console.error('Login failed:', error);
             setMessage('Login failed, please check credentials');

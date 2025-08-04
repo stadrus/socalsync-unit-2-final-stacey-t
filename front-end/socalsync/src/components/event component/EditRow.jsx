@@ -7,7 +7,7 @@ const EditRow = ({editFormData, handleEditFormChange, handleCancelClick}) => {
                 type="text"
                 name="title"
                 required="required"
-                placeholder="Enter a event title"
+                placeholder="Event title"
                 value={editFormData.title}
                 onChange = {handleEditFormChange}
                 ></input>
@@ -17,8 +17,8 @@ const EditRow = ({editFormData, handleEditFormChange, handleCancelClick}) => {
                 type="text"
                 name="details"
                 required="required"
-                placeholder="Enter a event details"
-                value={editFormData.detail}
+                placeholder="Event details"
+                value={editFormData.details}
                 onChange = {handleEditFormChange}
                 ></input>
             </td>
@@ -27,8 +27,18 @@ const EditRow = ({editFormData, handleEditFormChange, handleCancelClick}) => {
                 type= "datetime-local"
                 name="date"
                 required="required"
-                placeholder="Enter a event date"
+                placeholder="Event date"
                 value={editFormData.date}
+                onChange = {handleEditFormChange}
+                ></input>
+            </td>
+            <td>
+                <input 
+                type= "text"
+                name="location"
+                required="required"
+                placeholder="Event Location"
+                value={editFormData.location}
                 onChange = {handleEditFormChange}
                 ></input>
             </td>
