@@ -1,6 +1,5 @@
 import { useNavigate } from "react-router";
 import { useContext, useState } from "react";
-import { CometChatUIKit } from "@cometchat/chat-uikit-react";
 import { UserContext } from "../../context/UserContext";
 import { jwtDecode } from "jwt-decode";
 import {COMETCHAT_CONSTANTS} from '../../cometchat.config'
@@ -18,7 +17,6 @@ function Login () {
         e.preventDefault();
         setMessage('');
 
-        
         try{
             const response = await fetch("http://localhost:8080/api/user/login", {
                 method: "POST",
@@ -36,19 +34,19 @@ function Login () {
             }
 
             loginContext({user: data.user, storedToken: data.token});
+            
             const UID = jwtDecode(data.token).cometchatUID;
-             
-
-            const cometUser = await CometChatUIKit.getLoggedinUser();
+            
+            const cometUser = await CometChat.getLoggedinUser();
             if(!cometUser || cometUser.uid !== UID){
-                await CometChatUIKit.login(UID, COMETCHAT_CONSTANTS.AUTH_KEY);
-            }
-            navigate('/Dashboard');
-
+                await CometChat.logout();
+                await CometChat.login(UID, COMETCHAT_CONSTANTS.AUTH_KEY);
+            } 
+        navigate('/Dashboard');
         } catch (error) {
-            console.error('Login failed:', error);
-            setMessage('Login failed, please check credentials');
-        }
+                console.error('Login failed:', error);
+                setMessage('Login failed, please check credentials');
+            }
     };
 
     const handleClick = () =>{

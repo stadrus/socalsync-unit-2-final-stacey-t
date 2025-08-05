@@ -1,6 +1,5 @@
 //Code provided by cometchat docs to intergrate CometChat API.//
-import { CometChat} from "@cometchat/chat-sdk-javascript";
-import { CometChatConversations } from "@cometchat/chat-uikit-react";
+import { CometChatConversations, CometChatUIKit } from "@cometchat/chat-uikit-react";
 import { useEffect, useState } from "react";
 
 
@@ -15,26 +14,28 @@ const CometChatSelector = (props) => {
     const [activeItem, setActiveItem] = useState();
 
     useEffect(() =>{
-        CometChat.getLoggedInUser().then(user =>{
+        CometChatUIKit.getLoggedinUser()
+        .then((user) => {
             setLoggedInUser(user);
-        }).catch(error => {
-            console.log("Error fetching logged in user", error)
+        })
+        .catch((error) => {
+            console.error("Error fetching logged in user", error);
         });
     }, []);
 
     return (
-        <>
         <div>
-            {LoggedinUser && (
-                <CometChatConversations activeConversation={activeItem instanceof CometChat.Conversation ? activeItem : undefined} 
-                onItemClick={(item) =>{
+            {LoggedinUser ? (
+                <CometChatConversations activeConversation = {activeItem} 
+                onItemClick={(item) => {
                     setActiveItem(item);
                     onSelectorItemClicked(item, "updateSelectedItem");
                 }}
                 />
+            ) : (
+                <p>Loading Conversations...</p>
             )}
         </div>
-        </>
     );
 };
 

@@ -3,7 +3,11 @@
   display: flex;
   height: 100%;
   width: 100%;
-  flex-direction: row; /* Horizontal layout */
+  flex-direction: row;
+  .chat-container {
+  position: relative;
+  padding-right: 420px; 
+}
 }
 
 /* Sidebar container for the conversation list */
@@ -44,3 +48,4 @@
 .cometchat .cometchat-message-composer {
   border-radius: 0px;
 }
+

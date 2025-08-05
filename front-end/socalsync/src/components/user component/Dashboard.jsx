@@ -1,6 +1,6 @@
 import EventTable from "../event component/EventTable";
 import ShareButton from './ShareButton'
-import Chat from "../cometchat component/Chat";
+import Chat from "../cometchat_component/Chat"
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import './dashboard.css'

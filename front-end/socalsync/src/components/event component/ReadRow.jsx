@@ -4,12 +4,12 @@ const ReadRow = ({ event, handleEditClick, handleDeleteClick }) =>{
     return(
         <tr>
             <td>{event.title}</td>
-            <td>{event.details}</td>
+            <td>{event.description}</td>
             <td>{event.date}</td>
             <td>{event.location}</td>
             <td>
                 <button type='button' onClick={(e)=> handleEditClick (e,event)}>Edit</button>
-                <button type='button' onClick={()=> handleDeleteClick (event.id)}>Delete</button>
+                <button type='button' onClick={()=> handleDeleteClick (event.Id)}>Delete</button>
             </td>
         </tr>
     );

@@ -8,27 +8,27 @@ const EditRow = ({editFormData, handleEditFormChange, handleCancelClick}) => {
                 name="title"
                 required="required"
                 placeholder="Event title"
-                value={editFormData.title}
+                value={editFormData.title || ""}
                 onChange = {handleEditFormChange}
                 ></input>
             </td>
             <td>
                 <input 
                 type="text"
-                name="details"
+                name="description"
                 required="required"
                 placeholder="Event details"
-                value={editFormData.details}
+                value={editFormData.description || ""}
                 onChange = {handleEditFormChange}
                 ></input>
             </td>
             <td>
                 <input 
-                type= "datetime-local"
+                type= "date"
                 name="date"
                 required="required"
                 placeholder="Event date"
-                value={editFormData.date}
+                value={editFormData.date || ""}
                 onChange = {handleEditFormChange}
                 ></input>
             </td>
@@ -38,7 +38,7 @@ const EditRow = ({editFormData, handleEditFormChange, handleCancelClick}) => {
                 name="location"
                 required="required"
                 placeholder="Event Location"
-                value={editFormData.location}
+                value={editFormData.location || ""}
                 onChange = {handleEditFormChange}
                 ></input>
             </td>

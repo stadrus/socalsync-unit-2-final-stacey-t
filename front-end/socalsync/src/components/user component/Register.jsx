@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
-import { CometChatUIKit } from '@cometchat/chat-uikit-react';
 import './Register.css';
+import { COMETCHAT_CONSTANTS } from '../../cometchat.config';
+import { CometChatUIKit } from '@cometchat/chat-uikit-react';
 
 
 function Register () {
@@ -51,16 +52,22 @@ function Register () {
             const UID = user.cometchatUID;
 
 
-            const cometUser = await CometChatUIKit.getLoggedinUser();
-            if(!cometUser || cometUser.uid !== UID){
-                await CometChatUIKit.login(UID);
+            const newCometUser = new CometChat.User(UID);
+            newCometUser.setName(user.name);
+
+            try{
+                await CometChatUIKit.login(UID, COMETCHAT_CONSTANTS.AUTH_KEY)
+            } catch (error) {
+                console.error("CometChat login failed:", error);
+                setMessage("Registration succeeded, but chat login failed.");
+                return;
             }
 
             setMessage("Registration complete");
             navigate('/Login');
 
         } catch (error){
-            
+            console.error("Registration failed:", error);
             setMessage('Registration failed');
         }
         
