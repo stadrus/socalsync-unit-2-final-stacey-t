@@ -8,10 +8,11 @@ import Login from './components/user component/Login'
 import Dashboard from './components/user component/Dashboard'
 import EventTable from './components/event component/EventTable'
 import Chat from './components/cometchat_component/Chat'
-import "./components/cometchat_component/cometchat";
+import "./components/cometchat_component/CometChatSetup";
 import { UserContext } from './context/UserContext'
 import './App.css'
 import { useContext} from 'react'
+import CometChatApp from './components/cometchat_component/CometChatApp'
 
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           <Route path='/Dashboard' element={ user ? <Dashboard /> : <Navigate to= '/Login' />} />
           <Route path='/EventList' element={<EventTable />}/>
           <Route path='/Chat' element={<Chat />}></Route>
+          <Route path='/CometChatApp' element={<CometChatApp />}></Route>
         </Routes>
       </div>
         <Footer />
