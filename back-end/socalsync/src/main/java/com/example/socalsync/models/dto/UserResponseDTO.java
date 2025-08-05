@@ -1,16 +1,25 @@
 package com.example.socalsync.models.dto;
 
-public class UserRespponseDTO {
+import com.example.socalsync.models.User;
+
+public class UserResponseDTO {
     private int userId;
     private String name;
     private  String email;
     private String cometchatUID;
 
-    public UserRespponseDTO(int userId, String name, String email, String cometchatUID) {
+    public UserResponseDTO(int userId, String name, String email, String cometchatUID) {
         this.userId = userId;
         this.name = name;
         this.email = email;
         this.cometchatUID = cometchatUID;
+    }
+
+    public UserResponseDTO(User user) {
+        this.userId = user.getId();
+        this.name = user.getName();
+        this.email = user.getEmail();
+        this.cometchatUID = user.getCometchatUID();
     }
 
     public int getUserId() {

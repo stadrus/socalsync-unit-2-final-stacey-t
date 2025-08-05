@@ -30,29 +30,19 @@ public class EventController {
 
     //create Event
     //Endpoint http://localhost:8080/api/events/user/{userId}
-    @PostMapping("/user/{userId}")
-    public ResponseEntity<?> createEvent(@PathVariable int userId, @RequestBody EventDTO eventDTO, Principal principal) {
+    @PostMapping("/user")
+    public ResponseEntity<?> createEvent(@RequestBody EventDTO eventDTO, Principal principal) {
         int authenticatedUserId = userService.getUserFromPrincipal(principal);
-
-        if (authenticatedUserId != userId) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Cannot create event for another user.");
-        }
-
-        EventResponseDTO createdEvent = eventService.createEvent(userId, eventDTO);
+        EventResponseDTO createdEvent = eventService.createEvent(authenticatedUserId, eventDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdEvent);
     }
     
     //Get all events
     //Endpoint http:localhost:8080/api/events/user/{userId}
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<?> getAllUserEvents(@PathVariable int userId, Principal principal) {
+    @GetMapping("/user")
+    public ResponseEntity<?> getAllUserEvents(Principal principal) {
         int authenticatedUserId = userService.getUserFromPrincipal(principal);
-
-        if(authenticatedUserId != userId){
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You cannot view events for another user.");
-        }
-
-        List<EventResponseDTO> events = eventService.getAllUserEventsByUserId(userId);
+        List<EventResponseDTO> events = eventService.getAllUserEventsByUserId(authenticatedUserId);
         return ResponseEntity.ok(events);
     }
 
@@ -75,7 +65,7 @@ public class EventController {
     //Delete Event
     //Endpoint http://localhost:8080/api/events/{eventId}
     @DeleteMapping("/{eventId}")
-    public ResponseEntity<?> deleteEvent(@PathVariable int eventId) {
+    public ResponseEntity<String> deleteEvent(@PathVariable int eventId) {
         eventService.deleteEvent(eventId);
         return ResponseEntity.ok("Event deleted");
     }

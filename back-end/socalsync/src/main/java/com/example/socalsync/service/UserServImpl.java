@@ -1,28 +1,32 @@
 package com.example.socalsync.service;
 
 import com.example.socalsync.models.User;
+import com.example.socalsync.models.dto.RegisterRequest;
 import com.example.socalsync.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.security.Principal;
 import java.util.Optional;
-
+import java.util.UUID;
+@Transactional
 @Service
 public class UserServImpl implements UserService{
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CometChatService cometChatService;
 
-    @Autowired
-    public UserServImpl(UserRepository userRepository, PasswordEncoder passwordEncoder){
+@Autowired
+    public UserServImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CometChatService cometChatService){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.cometChatService = cometChatService;
     }
-
-
 
     @Override
     public Optional<User> findByEmail(String email) {
@@ -35,9 +39,27 @@ public class UserServImpl implements UserService{
     }
 
     @Override
-    public User register(User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(user);
+    public User registerUser(RegisterRequest request){
+        if(existsByEmail(request.getEmail())){
+            throw new IllegalArgumentException("Email already in use");
+        }
+        String cometchatUID = UUID.randomUUID().toString();
+        request.setCometchatUID(cometchatUID);
+
+        String encodedPassword = passwordEncoder.encode(request.getPassword());
+
+        User user = new User(
+                request.getName(),
+                request.getEmail(),
+                encodedPassword,
+                cometchatUID
+        );
+
+        userRepository.save(user);
+
+        cometChatService.registerUserWithCometChat(cometchatUID, request.getName());
+
+        return user;
     }
     @Override
     public void updateUser(User savedUser) {
@@ -46,23 +68,18 @@ public class UserServImpl implements UserService{
 
     @Override
     public User authenticate(String email, String password) {
-        Optional<User> optionalUser = userRepository.findByEmail(email);
-        if(optionalUser.isPresent()){
-
-            User user = optionalUser.get();
-            if(passwordEncoder.matches(password, user.getPassword())){
-                return user;
-            }
-        }
-        throw new BadCredentialsException("Invalid credentials");
+        return userRepository.findByEmail(email)
+                .filter(user -> passwordEncoder.matches(password, user.getPassword()))
+                .orElseThrow(()-> new BadCredentialsException("Invalid email or password"));
     }
+
 
     @Override
     public int getUserFromPrincipal(Principal principal) {
-        String username = principal.getName();
-        User user = userRepository.findByEmail(username)
-                .orElseThrow(() -> new UsernameNotFoundException("user not found" + username));
-        return user.getId();
+        String email = principal.getName();
+        return userRepository.findByEmail(email)
+                .map(User::getId)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found:" + email));
     }
 
 
