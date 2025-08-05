@@ -1,16 +1,13 @@
-import { useNavigate } from "react-router";
 import EventTable from "../event component/EventTable";
 import ShareButton from './ShareButton'
+import Chat from "../cometchat_component/Chat"
+import { useContext } from "react";
+import { UserContext } from "../../context/UserContext";
 import './dashboard.css'
-import Chat from "../cometchat component/Chat";
 
 const Dashboard = () => {
+    const {user, handleLogoutClick} = useContext(UserContext);
 
-    const navigate = useNavigate();
-    const handleLogoutClick = () => {
-    navigate ('../Home');
-    };
-    
     return(
         <div>
         <div className="dashboard-container">
@@ -19,7 +16,8 @@ const Dashboard = () => {
                 <button className="logout-button" type='button' id="Logout" name="Logout" onClick={handleLogoutClick}>Logout</button>
             </header>
             <section className="dashboard-hero">
-                <h1 className="dashboard-header">Welcome to your Dashboard</h1>
+
+                <h1 className="dashboard-header">Welcome, {user.name}</h1>
             </section>
         </div>
         </div>

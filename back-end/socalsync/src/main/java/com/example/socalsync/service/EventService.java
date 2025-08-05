@@ -22,35 +22,48 @@ public class EventService {
         this.userRepository = userRepository;
     }
     public EventResponseDTO createEvent(int userId, EventDTO eventDTO) {
-        Optional<User> userOptional = userRepository.findById(userId);
-        if (userOptional.isEmpty()) {
-            throw new RuntimeException("User not found");
-        }
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
         Event event = new Event();
         event.setTitle(eventDTO.getTitle());
         event.setDescription(eventDTO.getDescription());
-        event.setEventDateTime(eventDTO.getEventDateTime());
+        event.setDate(eventDTO.getDate());
         event.setLocation(eventDTO.getLocation());
-        event.setUser(userOptional.get());
+        event.setUser(user);
 
         Event saved = eventRepository.save(event);
         return mapToResponseDTO(saved);
     }
 
-
     public List<EventResponseDTO> getUserEvents(int userId) {
-        return eventRepository.findByUserId(userId).stream().map(this::mapToResponseDTO).collect(Collectors.toList());
+        return eventRepository.findByUserId(userId)
+                .stream()
+                .map(this::mapToResponseDTO)
+                .collect(Collectors.toList());
     }
+
+    public EventResponseDTO getEventById(int eventId){
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(()-> new RuntimeException("Event not found"));
+        return mapToResponseDTO(event);
+
+    }
+
+    public List<EventResponseDTO> getAllUserEventsByUserId(int userId){
+        return getUserEvents(userId);
+    }
+
     public EventResponseDTO updateEvent(int eventId, EventDTO eventDTO){
-        Event event = eventRepository.findById(eventId).orElseThrow(()-> new RuntimeException("Event not found"));
+        Event event = eventRepository.findById(eventId)
+                .orElseThrow(()-> new RuntimeException("Event not found"));
 
         event.setTitle(eventDTO.getTitle());
         event.setDescription(eventDTO.getDescription());
-        event.setEventDateTime(eventDTO.getEventDateTime());
+        event.setDate(eventDTO.getDate());
+        event.setLocation(eventDTO.getLocation());
 
         Event updated = eventRepository.save(event);
-
         return mapToResponseDTO(updated);
     }
     public void deleteEvent(int eventId){
@@ -65,17 +78,13 @@ public class EventService {
         dto.setEventId(event.getEventId());
         dto.setTitle(event.getTitle());
         dto.setDescription(event.getDescription());
-        dto.setEventDateTime(event.getEventDateTime());
+        dto.setDate(event.getDate());
         dto.setLocation(event.getLocation());
+        dto.setUserId(event.getUser().getId());
+
+        if(event.getUser() != null) {
+            dto.setUserId(event.getUser().getId());
+        }
         return dto;
-    }
-
-
-    public List<EventResponseDTO> getAllUserEventsByUserId(int userId) {
-    return null;
-    }
-
-    public EventResponseDTO getEventById(int eventId) {
-        return null;
     }
 }

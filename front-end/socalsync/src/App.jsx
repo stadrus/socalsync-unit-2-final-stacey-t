@@ -1,18 +1,23 @@
-import { BrowserRouter, Routes, Route } from 'react-router'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
+import Header from './components/page component/Header'
+import Footer from './components/page component/Footer'
+import Home from './components/page component/Home'
+import About from './components/page component/About'
+import Register from './components/user component/Register'
+import Login from './components/user component/Login'
+import Dashboard from './components/user component/Dashboard'
+import EventTable from './components/event component/EventTable'
+import Chat from './components/cometchat_component/Chat'
+import "./components/cometchat_component/CometChatSetup";
+import { UserContext } from './context/UserContext'
 import './App.css'
-import Header from '../../../front-end/socalsync/src/components/page component/Header'
-import Footer from '../../../front-end/socalsync/src/components/page component/Footer'
-import Home from '../../../front-end/socalsync/src/components/page component/Home'
-import About from '../../../front-end/socalsync/src/components/page component/About'
-import Register from '../src/components/user component/Register'
-import Login from '../src/components/user component/Login'
-import Dashboard from '../src/components/user component/Dashboard'
-import EventTable from '../src/components/event component/EventTable'
-import './components/cometchat component/cometchat'
-import Chat from './components/cometchat component/Chat'
+import { useContext} from 'react'
+import CometChatApp from './components/cometchat_component/CometChatApp'
 
 
 function App() {
+
+ const { user } = useContext(UserContext);
   
   return (
     <>
@@ -24,10 +29,11 @@ function App() {
           <Route path ='/Home' element={<Home />}/>
           <Route path ='/About' element={<About />}/>
           <Route path='/Register' element={<Register />}/>
-          <Route path='/Login' element={<Login />}/>
-          <Route path='/Dashboard' element={<Dashboard/>}/>
+          <Route path='/Login' element={ user ? <Navigate to= '/Dashboard' /> : <Login />}/>
+          <Route path='/Dashboard' element={ user ? <Dashboard /> : <Navigate to= '/Login' />} />
           <Route path='/EventList' element={<EventTable />}/>
           <Route path='/Chat' element={<Chat />}></Route>
+          <Route path='/CometChatApp' element={<CometChatApp />}></Route>
         </Routes>
       </div>
         <Footer />

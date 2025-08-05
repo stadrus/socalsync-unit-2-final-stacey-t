@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
-import { CometChatUIKit } from '@cometchat/chat-uikit-react';
 import './Register.css';
+import { COMETCHAT_CONSTANTS } from '../../cometchat.config';
+import { CometChatUIKit } from '@cometchat/chat-uikit-react';
 
 
 function Register () {
@@ -40,27 +41,33 @@ function Register () {
         try{
             const response = await fetch("http://localhost:8080/api/user/register",{
                 method: "POST",
-                headers: {"Content-type": "application/json"},
+                headers: {"Content-Type":"application/json"},
                 body: JSON.stringify({name, email, password})
             });
             
-            const user = await response.json();
-            const UID = user.cometchatUID;
-
             if(!response.ok){
                 throw new Error("Failed to register with backend");
             }
+            const user = await response.json();
+            const UID = user.cometchatUID;
 
-            const cometUser = await CometChatUIKit.getLoggedinUser();
-            if(!cometUser || cometUser.uid !== UID){
-                await CometChatUIKit.login(UID);
+
+            const newCometUser = new CometChat.User(UID);
+            newCometUser.setName(user.name);
+
+            try{
+                await CometChatUIKit.login(UID, COMETCHAT_CONSTANTS.AUTH_KEY)
+            } catch (error) {
+                console.error("CometChat login failed:", error);
+                setMessage("Registration succeeded, but chat login failed.");
+                return;
             }
 
             setMessage("Registration complete");
             navigate('/Login');
 
         } catch (error){
-            console.error('Registration error:', error);
+            console.error("Registration failed:", error);
             setMessage('Registration failed');
         }
         

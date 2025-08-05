@@ -3,7 +3,10 @@ package com.example.socalsync.models;
 
 
 import jakarta.persistence.*;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 public class Event {
@@ -13,12 +16,12 @@ public class Event {
     private int eventId;
     private String title;
     private String description;
-    private LocalDateTime eventDateTime;
+    private LocalDate date;
     private String location;
 
 
     @ManyToOne
-    @JoinColumn(name = "id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     private User user;
 
 
@@ -26,19 +29,21 @@ public class Event {
     public Event() {
     }
 
-    public Event(int eventId) {
+    public Event(int eventId, String title, String description, LocalDate date, String location, User user) {
         this.eventId = eventId;
-    }
-
-    public Event(String location, LocalDateTime eventDateTime, String description, String title) {
-
-        this.location = location;
-        this.eventDateTime = eventDateTime;
-        this.description = description;
         this.title = title;
+        this.description = description;
+        this.date = date;
+        this.location = location;
+        this.user = user;
     }
+
     //getters and setters
     public int getEventId() {return eventId;}
+
+    public void setEventId(int eventId) {
+        this.eventId = eventId;
+    }
 
     public User getUser() {return user;}
     public void setUser(User user) {this.user = user;}
@@ -57,9 +62,9 @@ public class Event {
         this.description = description;
     }
 
-    public LocalDateTime getEventDateTime() {return eventDateTime;}
+    public LocalDate getDate() {return date;}
 
-    public void setEventDateTime(LocalDateTime eventDateTime) {this.eventDateTime = eventDateTime;}
+    public void setDate(LocalDate date) {this.date = date;}
 
     public String getLocation() {return location;}
 
@@ -70,7 +75,7 @@ public class Event {
         return "Event{" +
                 "title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", eventDateTime=" + eventDateTime +
+                ", eventDateTime=" + date +
                 ", location='" + location + '\'' +
                 '}';
     }

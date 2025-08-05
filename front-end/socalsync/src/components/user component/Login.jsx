@@ -1,10 +1,13 @@
 import { useNavigate } from "react-router";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "../../context/UserContext";
+import { jwtDecode } from "jwt-decode";
+import {COMETCHAT_CONSTANTS} from '../../cometchat.config'
 import './Login.css'
-import { CometChatUIKit } from "@cometchat/chat-uikit-react";
 
 function Login () {
     const navigate = useNavigate();
+    const {loginContext} =useContext(UserContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [message, setMessage] = useState('');
@@ -13,11 +16,11 @@ function Login () {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMessage('');
-        
+
         try{
             const response = await fetch("http://localhost:8080/api/user/login", {
                 method: "POST",
-                headers: {"Content-Type": "application/json"},
+                headers: {"Content-Type":"application/json"},
                 body: JSON.stringify({ email, password})
             });
             
@@ -25,19 +28,25 @@ function Login () {
                 throw new Error('Invalid login');
             }
 
-            const user = await response.json();
-            const UID = user.cometchatUID;
-
-            const cometUser = await CometChatUIKit.getLoggedinUser();
-            if(!cometUser || cometUser.uid !== UID){
-                await CometChatUIKit.login(UID);
+            const data = await response.json();
+            if(!data.token){
+                throw new Error ("No token returned from backend")
             }
 
-            navigate('/Dashboard');
+            loginContext({user: data.user, storedToken: data.token});
+            
+            const UID = jwtDecode(data.token).cometchatUID;
+            
+            const cometUser = await CometChat.getLoggedinUser();
+            if(!cometUser || cometUser.uid !== UID){
+                await CometChat.logout();
+                await CometChat.login(UID, COMETCHAT_CONSTANTS.AUTH_KEY);
+            } 
+        navigate('/Dashboard');
         } catch (error) {
-            console.error('Login failed:', error);
-            setMessage('Login failed');
-        }
+                console.error('Login failed:', error);
+                setMessage('Login failed, please check credentials');
+            }
     };
 
     const handleClick = () =>{

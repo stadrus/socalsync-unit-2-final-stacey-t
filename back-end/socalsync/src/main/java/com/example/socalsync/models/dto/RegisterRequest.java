@@ -1,20 +1,18 @@
 package com.example.socalsync.models.dto;
 
 //This class is used to send the data to create the user in MYSQL and register the user in CometChat.
-
 public class RegisterRequest {
-    private String cometchatUID;
     private String name;
     private String email;
     private String password;
+    private String cometchatUID;
 
     //constructor
-    public RegisterRequest(String cometchatUID, String password, String email, String name) {
-        this.password = password;
-        this.email = email;
+    public RegisterRequest(String name, String email, String password, String cometchatUID) {
         this.name = name;
+        this.email = email;
+        this.password = password;
         this.cometchatUID = cometchatUID;
-
     }
 
     //getters and setters

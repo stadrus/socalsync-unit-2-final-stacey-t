@@ -6,19 +6,20 @@ import com.example.socalsync.models.dto.EventResponseDTO;
 import com.example.socalsync.service.EventService;
 import com.example.socalsync.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
-@CrossOrigin (origins = "*")
+@CrossOrigin (origins = "http://localhost:5173")
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
 
-    @Autowired
+
     private final EventService eventService;
-    @Autowired
     private final UserService userService;
 
     @Autowired
@@ -27,19 +28,21 @@ public class EventController {
         this.userService = userService;
     }
 
-    //Create Event
+    //create Event
     //Endpoint http://localhost:8080/api/events/user/{userId}
-    @PostMapping("/user/{userId}")
-    public ResponseEntity<EventResponseDTO> createEvent(@PathVariable int userId, @RequestBody EventDTO eventDTO) {
-        EventResponseDTO createdEvent = eventService.createEvent(userId, eventDTO);
-        return ResponseEntity.ok(createdEvent);
+    @PostMapping("/user")
+    public ResponseEntity<?> createEvent(@RequestBody EventDTO eventDTO, Principal principal) {
+        int authenticatedUserId = userService.getUserFromPrincipal(principal);
+        EventResponseDTO createdEvent = eventService.createEvent(authenticatedUserId, eventDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdEvent);
     }
-
+    
     //Get all events
     //Endpoint http:localhost:8080/api/events/user/{userId}
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<EventResponseDTO>> getAllUserEvents(@PathVariable int userId) {
-        List<EventResponseDTO> events = eventService.getAllUserEventsByUserId(userId);
+    @GetMapping("/user")
+    public ResponseEntity<?> getAllUserEvents(Principal principal) {
+        int authenticatedUserId = userService.getUserFromPrincipal(principal);
+        List<EventResponseDTO> events = eventService.getAllUserEventsByUserId(authenticatedUserId);
         return ResponseEntity.ok(events);
     }
 
@@ -62,10 +65,11 @@ public class EventController {
     //Delete Event
     //Endpoint http://localhost:8080/api/events/{eventId}
     @DeleteMapping("/{eventId}")
-    public ResponseEntity<?> deleteEvent(@PathVariable int eventId) {
+    public ResponseEntity<String> deleteEvent(@PathVariable int eventId) {
         eventService.deleteEvent(eventId);
         return ResponseEntity.ok("Event deleted");
     }
+
 
 
 }

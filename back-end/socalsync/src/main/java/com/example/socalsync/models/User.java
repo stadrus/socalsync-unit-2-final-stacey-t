@@ -2,6 +2,8 @@ package com.example.socalsync.models;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 
 @Entity
 public class User {
@@ -9,24 +11,30 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-
     private String email;
     private String password;
     private String cometchatUID;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Event> events;
+
     //constructors
-    public User(String cometchatUID, String name, String email, String password) {
+
+    public User() {
+    }
+
+    public User(String name, String email, String password, String cometchatUID) {
         this.name = name;
         this.email = email;
         this.password = password;
         this.cometchatUID = cometchatUID;
     }
 
-    public User() {
-
+    public User(int id) {
+        this.id =id;
     }
+//getters and setters
 
-    //getters and setters
 
     public int getId() {
         return id;
@@ -59,4 +67,5 @@ public class User {
     public String getCometchatUID() {return cometchatUID;}
 
     public void setCometchatUID(String cometchatUID) {this.cometchatUID = cometchatUID;}
+
 }

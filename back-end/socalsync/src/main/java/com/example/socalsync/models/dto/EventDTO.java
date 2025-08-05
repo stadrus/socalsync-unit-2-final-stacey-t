@@ -1,22 +1,23 @@
 package com.example.socalsync.models.dto;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.Date;
 
 
 public class EventDTO {
     private String title;
     private String description;
-    private LocalDateTime eventDateTime;
+    private LocalDate date;
     private String location;
 
 
     public EventDTO() {
     }
 
-    public EventDTO(String title, String description, LocalDateTime eventDateTime, String location) {
+    public EventDTO(String title, String description, LocalDate date, String location) {
         this.title = title;
         this.description = description;
-        this.eventDateTime = eventDateTime;
+        this.date = date;
         this.location = location;
     }
 
@@ -36,12 +37,12 @@ public class EventDTO {
         this.description = description;
     }
 
-    public LocalDateTime getEventDateTime() {
-        return eventDateTime;
+    public LocalDate getDate() {
+        return date;
     }
 
-    public void setEventDateTime(LocalDateTime eventDateTime) {
-        this.eventDateTime = eventDateTime;
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
     public String getLocation() {

@@ -1,26 +1,38 @@
 package com.example.socalsync.models.dto;
 
-import java.time.LocalDateTime;
+import com.example.socalsync.models.Event;
+
+import java.time.LocalDate;
+
 
 public class EventResponseDTO {
     private int eventId;
     private String title;
     private String description;
-    private LocalDateTime eventDateTime;
+    private LocalDate date;
     private String location;
+
+    private int userId;
 
     public EventResponseDTO() {
     }
 
-    public EventResponseDTO(int eventId, String title, String description, LocalDateTime eventDateTime, String location) {
-        this.eventId = eventId;
-        this.title = title;
-        this.description = description;
-        this.eventDateTime = eventDateTime;
-        this.location = location;
+    public EventResponseDTO(Event event) {
+        this.eventId = event.getEventId();
+        this.title = event.getTitle();
+        this.description = event.getDescription();
+        this.date = event.getDate();
+        this.location = event.getLocation();
     }
 
-    public void setEventId(int eventId) {}
+
+
+    public EventResponseDTO(int eventId, int userId) {
+        this.eventId = eventId;
+        this.userId = userId;
+    }
+
+    public void setEventId(int eventId) {this.eventId = eventId;}
     public int getEventId() {return eventId;}
 
     public String getTitle() {return title;}
@@ -29,11 +41,14 @@ public class EventResponseDTO {
     public String getDescription() {return description;}
     public void setDescription(String description) {this.description = description;}
 
-    public LocalDateTime getEventDateTime() {return eventDateTime;}
-    public void setEventDateTime(LocalDateTime eventDateTime) {this.eventDateTime = eventDateTime;}
+    public LocalDate getDate() {return date;}
+    public void setDate(LocalDate date) {this.date = date;}
 
     public String getLocation() {return location;}
     public void setLocation(String location) {this.location = location;}
 
-
+    public void setUserId(int userId) { this.userId = userId;}
+    public int getUserId(){
+        return userId;
+    }
 }
