@@ -28,7 +28,7 @@ const Dashboard = () => {
                 <ShareButton />
             </div>
             <div className="chat-box">
-                <Chat />
+                {/* <Chat /> */}
             </div>
         </div>
     )

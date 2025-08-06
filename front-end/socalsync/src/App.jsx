@@ -32,8 +32,8 @@ function App() {
           <Route path='/Login' element={ user ? <Navigate to= '/Dashboard' /> : <Login />}/>
           <Route path='/Dashboard' element={ user ? <Dashboard /> : <Navigate to= '/Login' />} />
           <Route path='/EventList' element={<EventTable />}/>
-          <Route path='/Chat' element={<Chat />}></Route>
-          <Route path='/CometChatApp' element={<CometChatApp />}></Route>
+          {/* <Route path='/Chat' element={<Chat />}></Route> */}
+          {/* <Route path='/CometChatApp' element={<CometChatApp />}></Route> */}
         </Routes>
       </div>
         <Footer />

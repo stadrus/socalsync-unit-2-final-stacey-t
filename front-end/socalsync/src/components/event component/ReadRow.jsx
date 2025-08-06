@@ -9,7 +9,7 @@ const ReadRow = ({ event, handleEditClick, handleDeleteClick }) =>{
             <td>{event.location}</td>
             <td>
                 <button type='button' onClick={(e)=> handleEditClick (e,event)}>Edit</button>
-                <button type='button' onClick={()=> handleDeleteClick (event.Id)}>Delete</button>
+                <button type='button' onClick={()=> handleDeleteClick (event.id)}>Delete</button>
             </td>
         </tr>
     );
