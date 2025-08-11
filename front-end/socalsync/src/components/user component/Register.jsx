@@ -1,8 +1,9 @@
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import './Register.css';
 import { COMETCHAT_CONSTANTS } from '../../cometchat.config';
 import { CometChatUIKit } from '@cometchat/chat-uikit-react';
+import { CometChat } from '@cometchat-pro/chat';
 
 
 function Register () {

@@ -10,25 +10,26 @@ const Dashboard = () => {
 
     return(
         <div>
-        <div className="dashboard-container">
-        <div className="dashboard-wrapper">
-            <header className="dasboard-header">
-                <button className="logout-button" type='button' id="Logout" name="Logout" onClick={handleLogoutClick}>Logout</button>
-            </header>
-            <section className="dashboard-hero">
+            <div className="dashboard-container">
+                    <button className="logout-button" type='button' id="Logout" name="Logout" onClick={handleLogoutClick}>Logout</button>
+                
+                <section className="dashboard-hero">
+                    <h1 className="dashboard-header">Welcome, {user.name}</h1>
+                </section>
+            
+                <div className="dashboard-main">
+                    <div className="dashboard-left">
+                        <EventTable />
+                        <div className="addtoany-container">
+                        <ShareButton />
+                        </div>
+                    </div>
 
-                <h1 className="dashboard-header">Welcome, {user.name}</h1>
-            </section>
-        </div>
-        </div>
-            <article className="dashboard-events">
-            <EventTable />
-            </article>
-            <div className="addtoany-container">
-                <ShareButton />
-            </div>
-            <div className="chat-box">
-                {/* <Chat /> */}
+                    <div className="dashboard-right">
+                        <Chat />
+                    </div>
+
+                </div>
             </div>
         </div>
     )

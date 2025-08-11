@@ -1,4 +1,5 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
+import { CometChat } from "@cometchat-pro/chat";
 import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { jwtDecode } from "jwt-decode";

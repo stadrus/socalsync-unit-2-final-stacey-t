@@ -10,14 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cometchat/chat-sdk-javascript": "^4.0.13",
-    "@cometchat/chat-uikit-react": "^6.1.1",
+    "@cometchat-pro/chat": "^3.0.13",
+    "@cometchat/chat-uikit-react": "^6.1.2",
     "esbuild": "^0.25.8",
     "jwt-decode": "^4.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-hook-form": "^7.60.0",
-    "react-router": "^7.6.3"
+    "react-router": "^7.6.3",
+    "react-router-dom": "^7.6.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
