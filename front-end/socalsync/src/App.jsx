@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import Header from './components/page component/Header'
 import Footer from './components/page component/Footer'
 import Home from './components/page component/Home'
@@ -14,16 +14,17 @@ import './App.css'
 import { useContext} from 'react'
 import CometChatApp from './components/cometchat_component/CometChatApp'
 
-
 function App() {
 
  const { user } = useContext(UserContext);
   
   return (
     <>
-      <BrowserRouter>
+    <div className='app-container'>
+    <header>
         <Header />
-      <div>
+    </header>
+      <div className='main-content'>
         <Routes>
           <Route path ='/' element={<Home />}/>
           <Route path ='/Home' element={<Home />}/>
@@ -32,12 +33,14 @@ function App() {
           <Route path='/Login' element={ user ? <Navigate to= '/Dashboard' /> : <Login />}/>
           <Route path='/Dashboard' element={ user ? <Dashboard /> : <Navigate to= '/Login' />} />
           <Route path='/EventList' element={<EventTable />}/>
-          <Route path='/Chat' element={<Chat />}></Route>
-          <Route path='/CometChatApp' element={<CometChatApp />}></Route>
+          <Route path='/Chat' element={ user ? <Chat /> : <Navigate to='/Login' />}></Route>
+          <Route path='/CometChatApp' element={user ? <CometChatApp /> : <Navigate to='/Login' /> }></Route>
         </Routes>
       </div>
+      <footer>
         <Footer />
-      </BrowserRouter>
+      </footer>
+        </div>
     </>
   )
 }

@@ -29,5 +29,15 @@ This is a full-stack web application for managing events. Users can add, edit, a
 •	PUT /api/events/{eventId} - Update event by ID
 •	DELETE /api/events/{eventId} - Delete event by ID
 
+## Problems
+•	UI/UX needs work. Could add register button to login page
+•	Needs password rest function/method 
+
 ## Notes
 Make sure to include a valid JWT token in the Authorization header for protected routes.
+
+## ERD
+https://drive.google.com/file/d/1u1AJAsajK3L_7SiIU9mKA-hA6NCE6XS9/view?usp=drive_link
+
+## Wireframe 
+https://drive.google.com/file/d/1VWdTjcBh2WKJZLTVwRoiRrC5lbFDaCM7/view?usp=drive_link
