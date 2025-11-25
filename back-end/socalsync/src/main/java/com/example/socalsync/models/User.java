@@ -13,7 +13,7 @@ public class User {
     private String name;
     private String email;
     private String password;
-    private String cometchatUID;
+    private String username;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Event> events;
@@ -23,11 +23,11 @@ public class User {
     public User() {
     }
 
-    public User(String name, String email, String password, String cometchatUID) {
+    public User(String name, String email, String password, String username) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.cometchatUID = cometchatUID;
+        this.username = username;
     }
 
     public User(int id) {
@@ -64,8 +64,11 @@ public class User {
         this.password = password;
     }
 
-    public String getCometchatUID() {return cometchatUID;}
+    public String getUsername() {
+        return username;
+    }
 
-    public void setCometchatUID(String cometchatUID) {this.cometchatUID = cometchatUID;}
-
+    public void setUsername(String username) {
+        this.username = username;
+    }
 }

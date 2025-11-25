@@ -1,70 +1,76 @@
-header{
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+.header-container{
     display: flex;
-    flex-direction: row;
-    align-items: center;
     justify-content: space-between;
-    width: 100%;
-    height: 100px;
+    align-items: center;
 }
+
 .logo{
     width: 100px;
     height: 100px;
-    border-radius: 50%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 24px;
     transition: all 0.3s ease;
     cursor: pointer;
 }
-.logo:hover{
-    background-color: rgb(223, 188, 148);
+    .logo:hover{
     transform: scale(1.2);
 }
-.nav-bar{
+
+nav {
+ padding: 1.5rem 2rem;
+ color: #fff;
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    justify-content: center;
-    gap: 20px;
-    font-size: 18px;
-    font-weight: 500;
-    margin-left: auto;
-    margin-right: 20px;
+    position: relative;
 }
-.nav-bar :hover{
-  position: relative;
-  display: inline-block;
-  text-decoration: none;
-  color: black;
+/* Hide the checkbox */
+.checkbtn {
+ font-size: 2rem;
+ color: white;
+ cursor: pointer;
+ display: none;
 }
-.home-button{
-    color: #ede1d8;
-    margin-left: 20px;
-    margin-right: 20px;
-    text-decoration: none;
+.menu-toggle {
+ display: none;
+}
+
+.nav-mobile {
+display: flex;
+flex-direction: row;
+gap: 1.5rem;
+justify-content: space-around;
+}
+.nav-mobile a {
+ color: #fff;
+ padding: auto;
+ text-decoration: none;
+ justify-content: left;
+}
+
+@media only screen and (max-width: 992px) {
+ .checkbtn {
+ display: block;
+ }
+.nav-mobile {
+ display: none;
+ position: absolute;
+ top: 5.8rem;
+ right: 0;
+background: #222831 transparent;
+ width: 100px;
+ flex-direction: column;
+ z-index: 1;
+
+}
+    #check:checked ~ .nav-mobile {
     display: flex;
-    align-items: left;    
-    justify-content: left;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: 600;
-    padding: 10px 20px;
-             
-}
-.about-button{
-     color: #ede1d8;
-    margin-left: 20px;
-    margin-right: 20px;
-    text-decoration: none;
-    display: flex;
-    align-items: left;    
-    justify-content: left;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    font-size: 20px;
-    font-weight: 600;
-    padding: 10px 20px;
+    }
+    .nav-mobile a {
+        color: #272323;
+        padding: auto;
+        text-align: center;
+    }
+    .nav-mobile a:hover {
+        background: #e6e8ec;
+    }
 }

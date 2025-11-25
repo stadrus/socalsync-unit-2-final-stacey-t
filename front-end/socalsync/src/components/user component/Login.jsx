@@ -1,9 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import { CometChat } from "@cometchat-pro/chat";
 import { useContext, useState } from "react";
 import { UserContext } from "../../context/UserContext";
 import { jwtDecode } from "jwt-decode";
-import {COMETCHAT_CONSTANTS} from '../../cometchat.config'
 import './Login.css'
 
 function Login () {
@@ -36,7 +34,7 @@ function Login () {
 
             loginContext({user: data.user, storedToken: data.token});
             
-            const UID = jwtDecode(data.token).cometchatUID;
+            const UID = jwtDecode(data.token).userChatUID;
             
             const cometUser = await CometChat.getLoggedinUser();
             if(!cometUser || cometUser.uid !== UID){

@@ -1,6 +1,5 @@
 import EventTable from "../event component/EventTable";
 import ShareButton from './ShareButton'
-import Chat from "../cometchat_component/Chat"
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import './dashboard.css'
@@ -24,11 +23,6 @@ const Dashboard = () => {
                         <ShareButton />
                         </div>
                     </div>
-
-                    <div className="dashboard-right">
-                        <Chat />
-                    </div>
-
                 </div>
             </div>
         </div>

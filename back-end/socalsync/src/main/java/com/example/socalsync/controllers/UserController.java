@@ -4,7 +4,6 @@ import com.example.socalsync.models.dto.LoginRequest;
 import com.example.socalsync.models.dto.RegisterRequest;
 import com.example.socalsync.models.dto.UserResponseDTO;
 import com.example.socalsync.security.JWTService;
-import com.example.socalsync.service.CometChatService;
 import com.example.socalsync.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,13 +22,11 @@ import com.example.socalsync.models.User;
     public class UserController {
 
     private final UserService userService;
-    private final CometChatService cometChatService;
     private final JWTService jwtService;
 
     @Autowired
-    public UserController(UserService userService, CometChatService cometChatService, JWTService jwtService) {
+    public UserController(UserService userService, JWTService jwtService) {
         this.userService = userService;
-        this.cometChatService = cometChatService;
         this.jwtService = jwtService;
     }
 
@@ -46,7 +43,7 @@ import com.example.socalsync.models.User;
         newUser.setName(request.getName());
         newUser.setEmail(request.getEmail());
         newUser.setPassword(request.getPassword());
-        newUser.setCometchatUID(request.getCometchatUID());
+        newUser.setUsername(request.getUsername());
 
 
         User savedUser = userService.registerUser(request);
@@ -55,18 +52,6 @@ import com.example.socalsync.models.User;
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("User Id failed");
         }
-
-        String cometchatUID = "user_" + savedUser.getId();
-        savedUser.setCometchatUID(cometchatUID);
-        userService.updateUser(savedUser);
-
-        try {
-            //save UID to user record and update
-            cometChatService.registerUserWithCometChat(cometchatUID, savedUser.getName());
-        } catch (Exception e) {
-            return ResponseEntity.internalServerError().body("Error registering user:" + e.getMessage());
-        }
-
 
         return ResponseEntity.ok(new UserResponseDTO(savedUser));
     }
@@ -83,7 +68,7 @@ import com.example.socalsync.models.User;
                     user.getId(),
                     user.getEmail(),
                     user.getName(),
-                    user.getCometchatUID()
+                    user.getUsername()
             );
 
             Map<String, Object> response = new HashMap<>();
@@ -114,7 +99,7 @@ import com.example.socalsync.models.User;
                 user.getId(),
                 user.getEmail(),
                 user.getName(),
-                user.getCometchatUID()
+                user.getUsername()
         );
 
         return ResponseEntity.ok(meDTO);

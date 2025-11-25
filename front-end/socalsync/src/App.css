@@ -12,16 +12,7 @@ body {
     flex-direction: column;
     min-height: 100vh;
 }
-header, footer{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem;
-    background-color: #0ea3dd;
-    color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(14, 124, 175, 0.1);
-}
+
 
 .main-content {
     flex: 1;
@@ -29,7 +20,6 @@ header, footer{
     max-width: 1200px;
     margin: 0 auto;
     width: 100%;
-    margin-top: 1rem;
 }
 
 
@@ -111,37 +101,21 @@ footer{
 }
 
 
-@media (max-width: 600px) {
-    .logo{
-        width: 100px;
-        height: 100px;
-    }
-    .nav-bar{
-        width: 100px;
-        height: 100px;
-    }
+@media (max-width: 1024px) {
+  .main-content {
+    padding: 1rem;
+    max-width: 100%;
+  }
     
 }
-@media (max-width: 768px){
-    body{
-        font-size: 14px;
-        margin: 10px
-    }
-}
+
 @media (max-width: 480px){
     .main-content{
        padding: 0.5rem;
        max-width: 100%;
     }
     header, footer{
-        flex-direction: column;
-        text-align: center;
-        gap: 0.5rem;
-    }
-    .submit-button{
-        width: 80px;
-        height: 25px;
-        font-size: 14px;
+       padding: 0.5rem;
     }
     body, html, #root {
         font-size: 14px;

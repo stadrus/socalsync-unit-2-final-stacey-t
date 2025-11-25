@@ -3,32 +3,38 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 100vh;
     background-color: (0, 0, 0, 0.2);
+    padding: 1rem;
+    box-sizing: border-box;
 }
 .app-bio{
-    font-size: x-large;
-    padding: 3em;
+    font-size: 1.25rem;
+    padding: 2em;
     font-weight: 400;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     text-align: center;
+    max-width: 800px;
 }
 form{
-    position: flex;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     margin: auto;
-    padding: auto;
+    padding: 1rem;
 }
 .feedback-box{
     position: relative;
-    width: 450px;
+    width: 100%;
+    max-width: 350px;
     -webkit-backdrop-filter: blur(25px);
     backdrop-filter: blur(25px);
-    border: 2px solid #1e1930;
+    height: auto;
+    border: 5px solid #1e1930;
     border-radius: 15px;
-    padding: 7em 3em 4em 3em;
+    padding: 6em 2em 3em 2em;
     color: white;
     box-shadow: 0px 0px 10px 2px (0, 0, 0, 0.3);
+    box-sizing: border-box;
 }
 .feedback-header{
     position: absolute;
@@ -38,15 +44,12 @@ form{
     display: flex;
     justify-content: center;
     background-color: #1e1930;
-    width: 140px;
-    height: 70px;
+    width: 100px;
+    height: 40px;
     border-radius: 0 0 20px 20px;
     align-items: center;
-}
-.feedback-header{
-    font-size: 16px;
+    font-size: 1.2rem;
     font-weight: 600;
-    padding: 10px;
     color: white;
     text-align: center;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -75,23 +78,54 @@ form{
 }
 .feedback-input{
     width: 100%;
-    padding: 30px 20px;
-    margin: auto;
+    padding: 0.5px;
+    margin: 0.5rem auto;
     display: inline-block;
     border: 1px solid #ccc;
     border-radius: 4px;
     box-sizing: border-box;
-    font-size: 16px;
+    font-size: 1rem;
     background: transparent;   
     color: white;
     outline: none;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-weight: 400;
+    font-weight: 100;
     text-align: center;
 }.feedback-input::placeholder{
     color: white;
-    font-size: 16px;
+    font-size: 1rem;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     font-weight: 400;
     text-align: center;
 }   
+@media (max-width: 780px) {
+    .app-bio {
+        font-size: 1rem;
+        padding: 1em;
+    }
+    .feedback-box {
+        max-width: 90%;
+        padding: 5em 1em 2em 1em;
+    }
+    .feedback-header {
+        width: 200px;
+        font-size: 0.9rem;
+    }
+    .feedback-input {
+        font-size: 14px;
+    }
+    @media (max-width: 480px) {
+    .feedback-header {
+        width: 180px;
+        height: 45px;
+        font-size: 0.85rem;
+    }
+
+    .feedback-box {
+        padding: 4.5em 1em 1.5em 1em;
+    }
+}
+    .feedback-input {
+        font-size: 14px;
+    }
+}

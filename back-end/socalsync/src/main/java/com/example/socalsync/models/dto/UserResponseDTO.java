@@ -6,20 +6,20 @@ public class UserResponseDTO {
     private int userId;
     private String name;
     private  String email;
-    private String cometchatUID;
+    private String username;
 
-    public UserResponseDTO(int userId, String name, String email, String cometchatUID) {
+    public UserResponseDTO(int userId, String name, String email, String username) {
         this.userId = userId;
         this.name = name;
         this.email = email;
-        this.cometchatUID = cometchatUID;
+        this.username = username;
     }
 
     public UserResponseDTO(User user) {
         this.userId = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
-        this.cometchatUID = user.getCometchatUID();
+        this.username = user.getUsername();
     }
 
     public int getUserId() {
@@ -46,11 +46,11 @@ public class UserResponseDTO {
         this.email = email;
     }
 
-    public String getCometchatUID() {
-        return cometchatUID;
+    public String getUsername() {
+        return username;
     }
 
-    public void setCometchatUID(String cometchatUID) {
-        this.cometchatUID = cometchatUID;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
