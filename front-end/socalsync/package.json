@@ -10,8 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cometchat-pro/chat": "^3.0.13",
-    "@cometchat/chat-uikit-react": "^6.1.2",
     "esbuild": "^0.25.8",
     "jwt-decode": "^4.0.0",
     "react": "^19.1.0",

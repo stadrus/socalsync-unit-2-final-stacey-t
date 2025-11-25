@@ -1,9 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import './Register.css';
-import { COMETCHAT_CONSTANTS } from '../../cometchat.config';
-import { CometChatUIKit } from '@cometchat/chat-uikit-react';
-import { CometChat } from '@cometchat-pro/chat';
+
 
 
 function Register () {
@@ -48,20 +46,6 @@ function Register () {
             
             if(!response.ok){
                 throw new Error("Failed to register with backend");
-            }
-            const user = await response.json();
-            const UID = user.cometchatUID;
-
-
-            const newCometUser = new CometChat.User(UID);
-            newCometUser.setName(user.name);
-
-            try{
-                await CometChatUIKit.login(UID, COMETCHAT_CONSTANTS.AUTH_KEY)
-            } catch (error) {
-                console.error("CometChat login failed:", error);
-                setMessage("Registration succeeded, but chat login failed.");
-                return;
             }
 
             setMessage("Registration complete");
