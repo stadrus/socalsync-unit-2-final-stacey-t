@@ -19,13 +19,11 @@ public class UserServImpl implements UserService{
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-    private final CometChatService cometChatService;
 
 @Autowired
-    public UserServImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, CometChatService cometChatService){
+    public UserServImpl(UserRepository userRepository, PasswordEncoder passwordEncoder){
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
-        this.cometChatService = cometChatService;
     }
 
     @Override
@@ -43,8 +41,7 @@ public class UserServImpl implements UserService{
         if(existsByEmail(request.getEmail())){
             throw new IllegalArgumentException("Email already in use");
         }
-        String cometchatUID = UUID.randomUUID().toString();
-        request.setCometchatUID(cometchatUID);
+
 
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
@@ -52,12 +49,10 @@ public class UserServImpl implements UserService{
                 request.getName(),
                 request.getEmail(),
                 encodedPassword,
-                cometchatUID
+                request.getUsername()
         );
 
         userRepository.save(user);
-
-        cometChatService.registerUserWithCometChat(cometchatUID, request.getName());
 
         return user;
     }

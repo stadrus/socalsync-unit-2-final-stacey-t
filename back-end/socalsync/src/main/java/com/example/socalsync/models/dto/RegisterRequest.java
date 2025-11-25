@@ -5,19 +5,17 @@ public class RegisterRequest {
     private String name;
     private String email;
     private String password;
-    private String cometchatUID;
+    private String username;
 
     //constructor
-    public RegisterRequest(String name, String email, String password, String cometchatUID) {
+    public RegisterRequest(String name, String email, String password, String username) {
         this.name = name;
         this.email = email;
         this.password = password;
-        this.cometchatUID = cometchatUID;
+        this.username = username;
     }
 
     //getters and setters
-    public String getCometchatUID() {return cometchatUID;}
-    public void setCometchatUID(String cometchatUID) {this.cometchatUID = cometchatUID;}
 
     public String getName() {
         return name;
@@ -38,5 +36,13 @@ public class RegisterRequest {
     }
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
