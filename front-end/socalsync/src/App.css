@@ -3,8 +3,6 @@ body {
     padding: 1rem;
     overflow-x: hidden;
     font-family: 'Poppins', sans-serif;
-    background: #005fea;
-    background: linear-gradient(135deg, #08ddaf 0%, #00c6ff 100%);
     min-height: 100vh;   
 }
 .app-container{

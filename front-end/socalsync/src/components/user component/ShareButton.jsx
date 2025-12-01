@@ -16,11 +16,9 @@ const ShareButton = () =>{
 
     return (
         <>
-        <div className="a2a_kit a2a_kit_size_32 a2a_default_style">
-            <a className="a2a_dd" href="https://www.addtoany.com/share"></a>
+        <div className="addtoany-container">
+            <a href="https://www.addtoany.com/share"></a>
         </div>
-        <script defer src="https://static.addtoany.com/menu/page.js"></script>
-       
        </> 
     );
 };

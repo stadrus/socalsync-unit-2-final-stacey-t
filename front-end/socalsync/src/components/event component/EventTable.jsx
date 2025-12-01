@@ -3,7 +3,7 @@ import ReadRow from "./ReadRow";
 import EditRow from "./EditRow";
 import './eventTable.css';
 import { UserContext } from "../../context/UserContext";
-
+import ShareButton from '../user component/ShareButton';
 //Using a table I will display the event details.//
 
 const EventTable = () =>{
@@ -140,7 +140,7 @@ const EventTable = () =>{
         const formValues = {
         title: event.title || "",
         description: event.description || "",
-        date: event.date ? event.date.slice(0, 10) : "",
+        date: event.date || "",
         location: event.location || "",
         };
 
@@ -169,73 +169,68 @@ const EventTable = () =>{
 
     return (
         <div className="event-container">
-            <form className= "edit-form"onSubmit={handleEditFormSubmit}>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Event Title</th>
-                            <th>Event Details</th>
-                            <th>Event Date and Time</th>
-                            <th>Location</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                   
-                    {events.map((event) => {
-                        const id = event.id || event.eventId;
-                        if (!id) console.warn("Missing event ID", event)
-                     return editEventId === id ? (
-                        <EditRow
-                        key={id}
-                        editFormData ={editFormData} 
-                        handleEditFormChange={handleEditFormChange}
-                        handleCancelClick={handleCancelClick}
-                        />
-                        ) : (
-                            <ReadRow 
-                            key = {id}
-                            event={event}
-                            handleEditClick = {handleEditClick} 
-                            handleDeleteClick ={handleDeleteClick}/>)
-                    })}
-                    
-                    </tbody>
-                </table>
-            </form>
+            <div className="event-list">
+                    {events.map((event) => (
+                        <div key={event.id} className="event-card">
+                        {editEventId === event.id ? (
+                            <form onSubmit={handleEditFormSubmit}>
+                            <EditRow
+                            editFormData ={editFormData} 
+                            handleEditFormChange={handleEditFormChange}
+                            handleCancelClick={handleCancelClick}
+                            />
+                            </form>
+                            ) : (
+                                <ReadRow 
+                                event={event}
+                                handleEditClick = {handleEditClick} 
+                                handleDeleteClick ={handleDeleteClick}
+                                />
+                                )}
+                        </div>
+                    ))}
+            </div>
 
-            <h2>Add Event</h2>
-            <form  className ="add-form" onSubmit={handleAddFormSubmit}>
-                <input 
-                    type="text"
-                    name="title"
-                    required="required"
-                    placeholder="Enter a event title"
-                    value={addFormData.title || ""}
-                    onChange = {handleAddFormChange}/>
-                <input 
-                    type="text"
-                    name="description"
-                    required="required"
-                    placeholder="Enter event description"
-                    value={addFormData.description || ""}
-                    onChange = {handleAddFormChange}/>
-                <input 
-                    type="date"
-                    name="date"
-                    required="required"
-                    value={addFormData.date}
-                    placeholder="Enter a date and start time"
-                    onChange = {handleAddFormChange}/>
-                <input 
-                    type="text"
-                    name="location"
-                    required="required"
-                    placeholder="Enter a event location"
-                    value={addFormData.location || ""}
-                    onChange = {handleAddFormChange}/>
-                <button type='submit'>Add</button>    
-            </form>
+            <div className="edit-form-card">
+                <form className="edit-form" onSubmit={handleEditFormSubmit}>
+                <ShareButton />
+                </form>
+            </div>
+
+            <div className="add-form-card">
+                <form  className ="add-form" onSubmit={handleAddFormSubmit}>
+                <h2>Add Event</h2>
+                    <input 
+                        type="text"
+                        name="title"
+                        required="required"
+                        placeholder="Enter a event title"
+                        value={addFormData.title || ""}
+                        onChange = {handleAddFormChange}/>
+                    <input 
+                        type="text"
+                        name="description"
+                        required="required"
+                        placeholder="Enter event description"
+                        value={addFormData.description || ""}
+                        onChange = {handleAddFormChange}/>
+                    <input 
+                        type= "datetime-local"                   
+                        name="date"
+                        required="required"
+                        value={addFormData.date}
+                        placeholder="Enter a date and start time"
+                        onChange = {handleAddFormChange}/>
+                    <input 
+                        type="text"
+                        name="location"
+                        required="required"
+                        placeholder="Enter a event location"
+                        value={addFormData.location || ""}
+                        onChange = {handleAddFormChange}/>
+                    <button type='submit'>Add</button>    
+                </form>
+            </div>
         </div>
     );
 

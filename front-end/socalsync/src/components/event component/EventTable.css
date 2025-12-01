@@ -1,35 +1,28 @@
-.event-container{
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 3rem;
-    width: 100%;
+.event-card{
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: auto;
+    margin: 0 auto;
+    font-size: smaller;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
 }
- table{
-    border-collapse: collapse;
-    width: 100%;
-    
- }
- th,td{
-    border: 1px;
-    text-align: left;
-    padding: 8px;
-    font-size: 16px;
- }
  th{
     background-color: #FF9B85 ;
  }
 td{
     background-color: #FFD97D;
 }
-form{
-    display: flex;
-    gap: 12px;
-}
-form td:last-child{
-    display: flex;
-    justify-content: space-evenly;
-}
-form * {
- font-size: 18px;
+.add-form-card{
+    background-color: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    text-align: center;
+    width: 250px;
+    margin: 0 auto;
 }
