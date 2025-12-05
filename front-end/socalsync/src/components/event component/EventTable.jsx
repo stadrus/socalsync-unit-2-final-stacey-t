@@ -3,7 +3,6 @@ import ReadRow from "./ReadRow";
 import EditRow from "./EditRow";
 import './eventTable.css';
 import { UserContext } from "../../context/UserContext";
-import ShareButton from '../user component/ShareButton';
 //Using a table I will display the event details.//
 
 const EventTable = () =>{
@@ -193,7 +192,6 @@ const EventTable = () =>{
 
             <div className="edit-form-card">
                 <form className="edit-form" onSubmit={handleEditFormSubmit}>
-                <ShareButton />
                 </form>
             </div>
 
