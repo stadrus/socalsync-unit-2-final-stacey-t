@@ -17,6 +17,7 @@ const Header = () => {
                 <div className="nav-mobile">
                     <Link to="/" className="home-button">Home</Link>
                     <Link to="/about" className="about-button">About Us</Link>
+                    <Link to="/references" className="reference-button">References</Link>
                 </div>
             </nav>
             </header>

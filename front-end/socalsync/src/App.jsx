@@ -10,6 +10,7 @@ import EventTable from './components/event component/EventTable'
 import { UserContext } from './context/UserContext'
 import './App.css'
 import { useContext} from 'react'
+import References from './components/page component/References'
 
 function App() {
 
@@ -26,6 +27,7 @@ function App() {
           <Route path ='/' element={<Home />}/>
           <Route path ='/Home' element={<Home />}/>
           <Route path ='/About' element={<About />}/>
+          <Route path='/References' element={<References />} />
           <Route path='/Register' element={<Register />}/>
           <Route path='/Login' element={ user ? <Navigate to= '/Dashboard' /> : <Login />}/>
           <Route path='/Dashboard' element={ user ? <Dashboard /> : <Navigate to= '/Login' />} />

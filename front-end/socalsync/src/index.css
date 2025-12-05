@@ -35,3 +35,16 @@
     padding: 6px 20px;
     border-radius: 90px;
 }
+.reference-container{
+    color: #1e1930;
+    margin:auto;
+    padding: 2rem;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    justify-content: space-around;
+    line-height: 1.5;
+    align-items: center;
+}
+.reference-description{
+    font-weight: 100;
+    font-size: 2rem;
+}
